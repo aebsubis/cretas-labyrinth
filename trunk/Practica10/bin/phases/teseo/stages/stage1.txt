@@ -1,0 +1,13 @@
+10 10
+1 1
+8 8
+wall_rock wall_rock wall_rock wall_rock wall_rock wall_rock wall_rock wall_rock wall_rock wall_rock
+wall_rock floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand wall_rock
+wall_rock floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand wall_rock
+wall_rock floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand wall_rock
+wall_rock floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand wall_rock
+wall_rock floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand wall_rock
+wall_rock floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand wall_rock
+wall_rock floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand wall_rock
+wall_rock floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand floor_sand wall_rock
+wall_rock wall_rock wall_rock wall_rock wall_rock wall_rock wall_rock wall_rock wall_rock wall_rock

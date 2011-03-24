@@ -1,0 +1,6 @@
+4 4
+1 1
+2 2
+false wall_rock false wall_rock false wall_rock false wall_rock
+false wall_rock true floor_sand true floor_sand false wall_rock
+false wall_rock true floor_sand true floor_sand false wall_rockfalse wall_rock false wall_rock false wall_rock false wall_rock
