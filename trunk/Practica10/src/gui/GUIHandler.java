@@ -1,7 +1,10 @@
 package gui;
 
+import java.util.Hashtable;
+
 import game.GameHandler;
 import game.GameObject;
+import game.Phase;
 import Practica10;
 import javax.microedition.lcdui.Display;
 
@@ -17,7 +20,13 @@ import utils.Location2D;
  * operaciones con los gráficos.
  */
 public class GUIHandler{
-
+	// Desfase vertical ocupado por la barra de estado.
+   	public static final int yBarSize = 19;
+   	
+	// Tamaño de los bloques en pixels.
+   	public static final int xBlockSize = 20;
+   	public static final int yBlockSize = 20;
+   	
 	// Milisegundos por fotograma (40mspf = 15fps)
 	public static final int MS_PER_FRAME = 40;
 	
@@ -28,10 +37,8 @@ public class GUIHandler{
 	private Practica10 theMidlet;
 	
 	// GUIObjects
-	private ArrayList objects;
-	
+	private Hashtable objects;
 	// CameraLocation
-	private Location2D camera;
 	
 	// Pantallas
 	private GUIMainMenu mainmenuScreen;
@@ -104,7 +111,7 @@ public class GUIHandler{
 		theMidlet = practica9;
 		
 		// Inicializamos el array de objetos.
-		objects = new ArrayList();
+		objects = new Hashtable();
 		
 		// Inicializamos las pantallas.
 		mainmenuScreen = new GUIMainMenu();
@@ -149,19 +156,32 @@ public class GUIHandler{
 		GUIObject o = new GUIObject(id, object, typeId);
 
 		// Lo añadimos a la lista de objetos.
-		objects.add(o);
+		objects.put(new Double(id), o);
 
 	}
 	
 	// Borra el objeto con el identificador indicado.
 	public void deleteObject(double objectId) {
-		boolean found = false;
-		for (int i = 0; i < objects.size() && found == false; i++) {
-			if (((GUIObject) objects.get(i)).getId() == objectId) {
-				found = true;
-				objects.remove(i);
-			}
+		GUIObject o = (GUIObject) objects.get(new Double(objectId));
+		
+		if(o==null) {
+			System.err.println( "GUIObject \"" + objectId + "\" not found.");
+			//System.exit(-1);
 		}
+		
+		objects.remove(new Double(objectId));
+	}
+	
+	// Borra el objeto con el identificador indicado.
+	public GUIObject getObject(double objectId) {
+		GUIObject o = (GUIObject) objects.get(new Double(objectId));
+		
+		if(o==null) {
+			System.err.println( "GUIObject \"" + objectId + "\" not found.");
+			System.exit(-1);
+		}
+		
+		return o;
 	}
 	
 	// Eliminas todos los objetos del manejador gráfico.
@@ -171,16 +191,16 @@ public class GUIHandler{
 	
 	// Obtenemos la posición de la cámara.
 	public Location2D getCamera() {
-		return this.camera;
+		return gameScreen.getCamera();
 	}
 	
 	// Establecemos la posición de la cámara.
-	public void setCamera(Location2D camera) {
-		this.camera = camera;
+	public void setCamera(Location2D camera, int mode) {
+		gameScreen.setCamera(camera, mode);
 	}
 	
 	// Obtenemos los objetos gráficos.
-	public ArrayList getObjects() {
+	public Hashtable getObjects() {
 		return this.objects;
 	}
 

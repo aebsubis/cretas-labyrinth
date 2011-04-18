@@ -29,7 +29,8 @@ public class GameHandler{
 	private int currentPhase;
 	
 	// Cola de eventos de teclado.
-	private ArrayList events;
+	private ArrayList pressEvents;
+	private ArrayList releaseEvents;
 	
 	// Indica si se ha completado el juego.
 	private boolean completed;
@@ -50,10 +51,11 @@ public class GameHandler{
 		Debugger.debug.print("GameHandler", "Init", "Starts");
 		
 		// Juego no completado.
-		setCompleted(false);
+		completed = false;
 		
 		// Inicializamos el vector de eventos.
-		events = new ArrayList();
+		pressEvents = new ArrayList();
+		releaseEvents = new ArrayList();
 		
 		// Inicializamos el ArrayList de fases.
 		phases = new ArrayList();
@@ -109,8 +111,8 @@ public class GameHandler{
 		// Fase actual.
 		Phase p = (Phase) phases.get(currentPhase);
 		
-		while(events.size()>0) {
-			Integer i = (Integer)events.remove(0);
+		while(pressEvents.size()>0) {
+			Integer i = (Integer)pressEvents.remove(0);
 			int event = i.intValue();
 			switch(event) {
 			case -1:
@@ -166,11 +168,74 @@ public class GameHandler{
 	        	 break;
 			}
 		}
+		
+		while(releaseEvents.size()>0) {
+			Integer i = (Integer)releaseEvents.remove(0);
+			int event = i.intValue();
+			switch(event) {
+			case -1:
+	            p.stopPlayer(Direction.UP);
+	            break;
+	         case -3:
+		         p.stopPlayer(Direction.LEFT);
+		        break;
+	         case -2:
+		         p.stopPlayer(Direction.DOWN);
+	            break;
+	         case -4:
+		         p.stopPlayer(Direction.RIGHT);
+		        break;
+	         case -5:
+	        	 System.out.println("FIRE");
+	        	 break;
+	         case 48:
+	        	 System.out.println("0");
+	        	 break;
+	         case 49:
+	        	 System.out.println("1");
+	        	 break;
+	         case 50:
+	        	 System.out.println("2");
+	        	 break;
+	         case 51:
+	        	 System.out.println("3");
+	        	 break;
+	         case 52:
+	        	 System.out.println("4");
+	        	 break;
+	         case 53:
+	        	 System.out.println("5");
+	        	 break;
+	         case 54:
+	        	 System.out.println("6");
+	        	 break;
+	         case 55:
+	        	 System.out.println("7");
+	        	 break;
+	         case 56:
+	        	 System.out.println("8");
+	        	 break;
+	         case 57:
+	        	 System.out.println("9");
+	        	 break;
+	         case 35:
+	        	 System.out.println("POUND");
+	        	 break;
+	         case 42:
+	        	 System.out.println("STAR");
+	        	 break;
+			}
+		}
 	}
 	
 	// Añade un evento a la cola de eventos.
-	public void addEvent(int event) {
-		events.add(new Integer(event));
+	public void addPressEvent(int event) {
+		pressEvents.add(new Integer(event));
+	}
+	
+	// Añade un evento a la cola de eventos.
+	public void addReleaseEvent(int event) {
+		releaseEvents.add(new Integer(event));
 	}
 
 	// Pasa a la siguiente diapositiva.

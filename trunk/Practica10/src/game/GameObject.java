@@ -1,6 +1,8 @@
 package game;
 
+import gui.GUIHandler;
 import utils.Location2D;
+import utils.ResourcesHandler;
 
 /**
  * Clase que define los atributos y operaciones básicas de un objeto del juego.
