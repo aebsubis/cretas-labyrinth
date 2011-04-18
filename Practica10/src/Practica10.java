@@ -31,17 +31,17 @@ public class Practica10 extends MIDlet {
 	protected void startApp() throws MIDletStateChangeException {
 		
 		try {
-		// Pedir a la capa de persistencia el último idioma preferido seleccionado.
-		//
-		
-		// Inicializamos los recursos.
-		ResourcesHandler.getInstance().init();
-		
-		// Inicializamos la interfaz gráfica.
-		GUIHandler.getInstance().init(this);
-		
-		// Mostramos la pantalla inicial.
-		GUIHandler.getInstance().showScreen(GUIScreens.STARTSCREEN);
+			// Pedir a la capa de persistencia el último idioma preferido seleccionado.
+			//
+			
+			// Inicializamos los recursos.
+			ResourcesHandler.getInstance().init();
+			
+			// Inicializamos la interfaz gráfica.
+			GUIHandler.getInstance().init(this);
+			
+			// Mostramos la pantalla inicial.
+			GUIHandler.getInstance().showScreen(GUIScreens.STARTSCREEN);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

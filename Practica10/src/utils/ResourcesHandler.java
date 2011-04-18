@@ -146,7 +146,12 @@ public class ResourcesHandler{
 		    	images.put("end_level3",Image.createImage("/element/end3.png"));
 		    	
 		    	/// Personajes
-		    	images.put("player_icaro", Image.createImage("/element/player_icaro.png"));
+		    	images.put("player_icaro_front1", Image.createImage("/element/player_icaro_front1.png"));	
+		    	images.put("player_icaro_front2", Image.createImage("/element/player_icaro_front2.png"));
+		    	images.put("player_icaro_front3", Image.createImage("/element/player_icaro_front3.png"));
+		    	images.put("player_icaro_back1", Image.createImage("/element/player_icaro_back1.png"));	
+		    	images.put("player_icaro_back2", Image.createImage("/element/player_icaro_back2.png"));
+		    	images.put("player_icaro_back3", Image.createImage("/element/player_icaro_back3.png"));
 		    	
 		    	//images.put("player_dedalos", Image.createImage("/element/player_dedadlos.png"));
 		    	//images.put("player_teseo", Image.createImage("/element/player_teseo.png"));
@@ -212,8 +217,27 @@ public class ResourcesHandler{
 	    	
 	    	/// Personajes
 	    	f = new ArrayList();
-	    	f.add("player_icaro");
-	    	animations.put("player_icaro", f);
+	    	f.add("player_icaro_front1");
+	    	animations.put("player_icaro_stand_front", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("player_icaro_back1");
+	    	animations.put("player_icaro_stand_back", f);
+	    	
+	    	
+	    	f = new ArrayList();
+	    	f.add("player_icaro_front1");
+	    	f.add("player_icaro_front2");
+	    	f.add("player_icaro_front1");
+	    	f.add("player_icaro_front3");
+	    	animations.put("player_icaro_walk_front", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("player_icaro_back1");
+	    	f.add("player_icaro_back2");
+	    	f.add("player_icaro_back1");
+	    	f.add("player_icaro_back3");
+	    	animations.put("player_icaro_walk_back", f);
 	    	
 	    	// f = new ArrayList();
 	    	// f.add("player_dedalos");

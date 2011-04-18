@@ -8,6 +8,7 @@ import gui.GUIScreens;
 import utils.ArrayList;
 import utils.Debugger;
 import utils.Location2D;
+import utils.ResourcesHandler;
 
 /**
  * Clase que contiene la información de una pantalla.
@@ -16,6 +17,12 @@ import utils.Location2D;
  */
 public class Stage {
 
+	// Modo de movimiento de la cámara.
+	// 0 instantaneo
+	// 1 por bloque
+	// 2 suavizado
+	private static final int cameraMovementMode = 2;
+	
 	// Identificador de la pantalla.
 	private String id;
 	
@@ -150,13 +157,13 @@ public class Stage {
 		player = new Element(playerId, playerStartLocation, 5, 10, 100, true, false, false, false, false);
 
 		// Creamos el objeto gráfico.
-		GUIHandler.getInstance().registerObject(playerId, player, "player_icaro");
+		GUIHandler.getInstance().registerObject(playerId, player, "player_icaro_stand_front");
 		
 		// Obtenemos la posición inicial de la cámara.
 		Location2D cameraStartLocation = new Location2D(startLocation.getX(), startLocation.getY());
 		
 		// Establecemos la posición de la cámara.
-		GUIHandler.getInstance().setCamera(cameraStartLocation);
+		GUIHandler.getInstance().setCamera(cameraStartLocation,0);
 		
 		// Muestra la pantalla de juego.
 		GUIHandler.getInstance().showScreen(GUIScreens.GAME);
@@ -289,23 +296,31 @@ public class Stage {
 		switch(direction) {
 		case Direction.UP:
 			Location2D pFinLocUp = new Location2D(pActLoc.getX(), pActLoc.getY()-1);
-			if(isOnMap(pFinLocUp) && getScenery(pFinLocUp).isPassable())
+			if(isOnMap(pFinLocUp) && getScenery(pFinLocUp).isPassable()){
+				GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_walk_back"));
 				pEndLoc = player.move(Direction.UP);
+			}
 			break;
 		case Direction.DOWN:
 			Location2D pFinLocDown = new Location2D(pActLoc.getX(), pActLoc.getY()+1);
-			if(isOnMap(pFinLocDown) && getScenery(pFinLocDown).isPassable())
+			if(isOnMap(pFinLocDown) && getScenery(pFinLocDown).isPassable()) {
+				GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_walk_front"));
 				pEndLoc = player.move(Direction.DOWN);
+			}
 			break;
 		case Direction.LEFT:
 			Location2D pFinLocDownLeft = new Location2D(pActLoc.getX()-1, pActLoc.getY());
-			if(isOnMap(pFinLocDownLeft) && getScenery(pFinLocDownLeft).isPassable())
+			if(isOnMap(pFinLocDownLeft) && getScenery(pFinLocDownLeft).isPassable()) {
+				//GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_left"));
 				pEndLoc = player.move(Direction.LEFT);
+			}
 			break;
 		case Direction.RIGHT:
 			Location2D pFinLocDownRight = new Location2D(pActLoc.getX()+1, pActLoc.getY());
-			if(isOnMap(pFinLocDownRight) && getScenery(pFinLocDownRight).isPassable())
+			if(isOnMap(pFinLocDownRight) && getScenery(pFinLocDownRight).isPassable()) {
+				//GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_right"));
 				pEndLoc = player.move(Direction.RIGHT);
+			}
 			break;
 		}
 		
@@ -324,13 +339,31 @@ public class Stage {
 						visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i] = true;
 			
 			// Actualizamos la cámara.
-			GUIHandler.getInstance().setCamera(pEndLoc);
+			GUIHandler.getInstance().setCamera(pEndLoc, cameraMovementMode);
 		}
 		
 		// Devolvemos el resultado.
 		return success;
 	}
 
+	// Detiene al jugador.
+	public boolean stopPlayer(int direction) {
+		switch(direction) {
+		case Direction.UP:
+			GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_back"));
+			break;
+		case Direction.DOWN:
+			GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_front"));
+			break;
+		case Direction.LEFT:
+			//GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_left"));
+			break;
+		case Direction.RIGHT:
+			//GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_right"));
+			break;
+		}
+		return true;
+	}
 	// Devuelve true si la coordenada se encuentra dentro de los límites del mapa.
 	private boolean isOnMap(Location2D location) {
 		return (location.getX() >= 0 && location.getX() < width && location.getY() >= 0 && location.getY() < height);
