@@ -1,5 +1,0 @@
-2
-slide1.png
-Texto1
-slide2.png
-Texto2
