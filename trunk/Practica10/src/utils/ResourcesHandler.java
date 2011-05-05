@@ -152,6 +152,12 @@ public class ResourcesHandler{
 		    	images.put("player_icaro_back1", Image.createImage("/element/player_icaro_back1.png"));	
 		    	images.put("player_icaro_back2", Image.createImage("/element/player_icaro_back2.png"));
 		    	images.put("player_icaro_back3", Image.createImage("/element/player_icaro_back3.png"));
+		    	images.put("player_icaro_right1", Image.createImage("/element/player_icaro_right1.png"));	
+		    	images.put("player_icaro_right2", Image.createImage("/element/player_icaro_right2.png"));
+		    	images.put("player_icaro_right3", Image.createImage("/element/player_icaro_right3.png"));
+		    	images.put("player_icaro_left1", Image.createImage("/element/player_icaro_left1.png"));	
+		    	images.put("player_icaro_left2", Image.createImage("/element/player_icaro_left2.png"));
+		    	images.put("player_icaro_left3", Image.createImage("/element/player_icaro_left3.png"));
 		    	
 		    	//images.put("player_dedalos", Image.createImage("/element/player_dedadlos.png"));
 		    	//images.put("player_teseo", Image.createImage("/element/player_teseo.png"));
@@ -224,6 +230,14 @@ public class ResourcesHandler{
 	    	f.add("player_icaro_back1");
 	    	animations.put("player_icaro_stand_back", f);
 	    	
+	    	f = new ArrayList();
+	    	f.add("player_icaro_right1");
+	    	animations.put("player_icaro_stand_right", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("player_icaro_left1");
+	    	animations.put("player_icaro_stand_left", f);
+	    	
 	    	
 	    	f = new ArrayList();
 	    	f.add("player_icaro_front1");
@@ -238,6 +252,20 @@ public class ResourcesHandler{
 	    	f.add("player_icaro_back1");
 	    	f.add("player_icaro_back3");
 	    	animations.put("player_icaro_walk_back", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("player_icaro_right1");
+	    	f.add("player_icaro_right2");
+	    	f.add("player_icaro_right1");
+	    	f.add("player_icaro_right3");
+	    	animations.put("player_icaro_walk_right", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("player_icaro_left1");
+	    	f.add("player_icaro_left2");
+	    	f.add("player_icaro_left1");
+	    	f.add("player_icaro_left3");
+	    	animations.put("player_icaro_walk_left", f);
 	    	
 	    	// f = new ArrayList();
 	    	// f.add("player_dedalos");
