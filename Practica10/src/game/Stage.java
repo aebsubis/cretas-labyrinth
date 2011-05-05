@@ -311,14 +311,14 @@ public class Stage {
 		case Direction.LEFT:
 			Location2D pFinLocDownLeft = new Location2D(pActLoc.getX()-1, pActLoc.getY());
 			if(isOnMap(pFinLocDownLeft) && getScenery(pFinLocDownLeft).isPassable()) {
-				//GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_left"));
+				GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_walk_left"));
 				pEndLoc = player.move(Direction.LEFT);
 			}
 			break;
 		case Direction.RIGHT:
 			Location2D pFinLocDownRight = new Location2D(pActLoc.getX()+1, pActLoc.getY());
 			if(isOnMap(pFinLocDownRight) && getScenery(pFinLocDownRight).isPassable()) {
-				//GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_right"));
+				GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_walk_right"));
 				pEndLoc = player.move(Direction.RIGHT);
 			}
 			break;
@@ -356,10 +356,10 @@ public class Stage {
 			GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_front"));
 			break;
 		case Direction.LEFT:
-			//GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_left"));
+			GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_left"));
 			break;
 		case Direction.RIGHT:
-			//GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_right"));
+			GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_right"));
 			break;
 		}
 		return true;
