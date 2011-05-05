@@ -21,7 +21,8 @@ public class Stage {
 	// 0 instantaneo
 	// 1 por bloque
 	// 2 suavizado
-	private static final int cameraMovementMode = 1;
+	// 3 pr0
+	private static final int cameraMovementMode = 3;
 	
 	// Identificador de la pantalla.
 	private String id;
