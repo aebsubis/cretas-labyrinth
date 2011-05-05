@@ -19,10 +19,8 @@ public class Stage {
 
 	// Modo de movimiento de la cámara.
 	// 0 instantaneo
-	// 1 por bloque
-	// 2 suavizado
-	// 3 pr0
-	private static final int cameraMovementMode = 3;
+	// 1 suavizado
+	private static final int cameraMovementMode = 1;
 	
 	// Identificador de la pantalla.
 	private String id;
@@ -110,7 +108,7 @@ public class Stage {
 					scenery[i][j] = new Scenery(objectId, new Location2D(i, j) ,false);
 					
 					// Creamos el objeto gráfico.
-					GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "wall_rock");
+					GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "wall_rock", 1);
 				}
 				else {
 					
@@ -120,14 +118,14 @@ public class Stage {
 						scenery[i][j] = new Scenery(objectId,new Location2D(i, j), true);
 					
 						// Creamos el objeto gráfico.
-						GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "floor_sand");
+						GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "floor_sand", 1);
 					}
 					else {
 						// Creamos el objeto lógico.
 						scenery[i][j] = new Scenery(objectId, new Location2D(i, j) ,false);
 						
 						// Creamos el objeto gráfico.
-						GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "wall_rock");
+						GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "wall_rock", 1);
 					}
 				}
 			}
@@ -144,7 +142,7 @@ public class Stage {
 		Trigger endLevel = new Trigger(endLevelId, endLevelStartLocation);
 		
 		// Creamos el objeto gráfico fin de nivel.
-		GUIHandler.getInstance().registerObject(endLevelId, endLevel, "end_level");
+		GUIHandler.getInstance().registerObject(endLevelId, endLevel, "end_level", 2);
 		
 		
 		// Añadimos los elementos
@@ -158,7 +156,7 @@ public class Stage {
 		player = new Element(playerId, playerStartLocation, 5, 10, 100, true, false, false, false, false);
 
 		// Creamos el objeto gráfico.
-		GUIHandler.getInstance().registerObject(playerId, player, "player_icaro_stand_front");
+		GUIHandler.getInstance().registerObject(playerId, player, "player_icaro_stand_front", 2);
 		
 		// Obtenemos la posición inicial de la cámara.
 		Location2D cameraStartLocation = new Location2D(startLocation.getX(), startLocation.getY());

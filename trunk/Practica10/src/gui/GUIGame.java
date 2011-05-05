@@ -90,13 +90,37 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 	   	int yMin = cameraLocation.getY() - 4;
 	   	int yMax = cameraLocation.getY() + 5;
 
-	   	// Obtenemos los elementos del escenario.
-	   	Enumeration objects = GUIHandler.getInstance().getObjects().elements();
+	 // Obtenemos los elementos del escenario.
+	   	Enumeration objects1 = GUIHandler.getInstance().getObjects(1).elements();
 
 	   	// Dibujamos el escenario.
-	   	while(objects.hasMoreElements()){
+	   	while(objects1.hasMoreElements()){
 	   		// Obtenemos el objeto i.
-			GUIObject o = (GUIObject) objects.nextElement();
+			GUIObject o = (GUIObject) objects1.nextElement();
+			
+			// Obtenemos la localización del objeto.
+			Location2D objectLocation = o.getLocation();
+			
+			// Comprobamos si se encuentra dentro del área de dibujado.
+			if(objectLocation.getX() >= xMin && objectLocation.getX() <= xMax && objectLocation.getY() >= yMin && objectLocation.getY() <= yMax) {
+				// Actualizamos la animación.
+				o.animate();
+				
+				// Lo dibujamos en la zona correspondiente.
+				graphics.drawImage(ResourcesHandler.getInstance().getImage(o.getImage()),
+						GUIHandler.xBlockSize * (objectLocation.getX() - xMin) - camera.getSmoothX(),
+						GUIHandler.yBarSize + (GUIHandler.yBlockSize * (objectLocation.getY() - yMin)) - camera.getSmoothY(),
+						Graphics.LEFT | Graphics.TOP);
+			}
+		}
+	   	
+	   	// Obtenemos el resto de elementos
+	   	Enumeration objects2 = GUIHandler.getInstance().getObjects(2).elements();
+
+	   	// Dibujamos.
+	   	while(objects2.hasMoreElements()){
+	   		// Obtenemos el objeto i.
+			GUIObject o = (GUIObject) objects2.nextElement();
 			
 			// Obtenemos la localización del objeto.
 			Location2D objectLocation = o.getLocation();
