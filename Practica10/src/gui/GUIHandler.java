@@ -37,8 +37,8 @@ public class GUIHandler{
 	private Practica10 theMidlet;
 	
 	// GUIObjects
-	private Hashtable objects;
-	// CameraLocation
+	private Hashtable objects1;
+	private Hashtable objects2;
 	
 	// Pantallas
 	private GUIMainMenu mainmenuScreen;
@@ -111,7 +111,8 @@ public class GUIHandler{
 		theMidlet = practica9;
 		
 		// Inicializamos el array de objetos.
-		objects = new Hashtable();
+		objects1 = new Hashtable();
+		objects2 = new Hashtable();
 		
 		// Inicializamos las pantallas.
 		mainmenuScreen = new GUIMainMenu();
@@ -150,43 +151,55 @@ public class GUIHandler{
 	}
 
 	// Registra un objeto gráfico.
-	public void registerObject(double id, GameObject object, String typeId) {
+	public void registerObject(double id, GameObject object, String typeId, int i) {
 		
 		// Creamos el objeto.
 		GUIObject o = new GUIObject(id, object, typeId);
 
 		// Lo añadimos a la lista de objetos.
-		objects.put(new Double(id), o);
+		if(i==1) objects1.put(new Double(id), o);
+		if(i==2) objects2.put(new Double(id), o);
 
 	}
 	
 	// Borra el objeto con el identificador indicado.
 	public void deleteObject(double objectId) {
-		GUIObject o = (GUIObject) objects.get(new Double(objectId));
-		
-		if(o==null) {
-			System.err.println( "GUIObject \"" + objectId + "\" not found.");
-			//System.exit(-1);
+		GUIObject o1 = (GUIObject) objects1.get(new Double(objectId));
+		if(o1==null) {
+			GUIObject o2 = (GUIObject) objects2.get(new Double(objectId));
+			if(o2==null) {
+				System.err.println( "GUIObject \"" + objectId + "\" not found.");
+				System.exit(-1);
+			} else {
+				objects2.remove(new Double(objectId));
+			}
+		} else {			
+			objects1.remove(new Double(objectId));
 		}
-		
-		objects.remove(new Double(objectId));
 	}
 	
 	// Borra el objeto con el identificador indicado.
 	public GUIObject getObject(double objectId) {
-		GUIObject o = (GUIObject) objects.get(new Double(objectId));
-		
-		if(o==null) {
-			System.err.println( "GUIObject \"" + objectId + "\" not found.");
-			System.exit(-1);
+		GUIObject r = null;
+		GUIObject o1 = (GUIObject) objects1.get(new Double(objectId));
+		if(o1==null) {
+			GUIObject o2 = (GUIObject) objects2.get(new Double(objectId));
+			if(o2==null) {
+				System.err.println( "GUIObject \"" + objectId + "\" not found.");
+				System.exit(-1);
+			} else {
+				r = o2;
+			}
+		} else {
+			r = o1;
 		}
-		
-		return o;
+		return r;
 	}
 	
 	// Eliminas todos los objetos del manejador gráfico.
 	public void deleteAllObjects() {
-		objects.clear();
+		objects1.clear();
+		objects2.clear();
 	}
 	
 	// Obtenemos la posición de la cámara.
@@ -200,8 +213,11 @@ public class GUIHandler{
 	}
 	
 	// Obtenemos los objetos gráficos.
-	public Hashtable getObjects() {
-		return this.objects;
+	public Hashtable getObjects(int i) {
+		Hashtable r = null;
+		if(i==1)r = this.objects1;
+		else if(i==2) r = this.objects2;
+		return r;
 	}
 
 	// Establece la presentación a mostrarse.
