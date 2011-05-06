@@ -8,12 +8,9 @@ import utils.Location2D;
  * 
  */
 public class Scenery extends GameObject{
-	// Identificador del objeto.
-	private double id;
 	
 	// Indica si se puede atravesar.
-	private boolean isPassable;
-	
+	private boolean isPassable;	
 	
 	// Constructor por defecto.
 	public Scenery() {
@@ -27,16 +24,6 @@ public class Scenery extends GameObject{
 		super(id, location);
 		
 		this.isPassable = passable;
-	}
-	
-	// Obtiene el identificador.
-	public double getId() {
-		return id;
-	}
-	
-	// Establece el identificador.
-	public void setId(double id) {
-		this.id = id;
 	}
 	
 	// Indica si se puede atravesar.

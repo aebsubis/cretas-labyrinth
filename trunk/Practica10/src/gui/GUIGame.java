@@ -83,10 +83,10 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 	   	Location2D cameraLocation = camera.getLocation();
 
 	   	// Calculamos el área de recorte.
-	   	int xMin = cameraLocation.getX() - 5;
-	   	int xMax = cameraLocation.getX() + 5;
-	   	int yMin = cameraLocation.getY() - 4;
-	   	int yMax = cameraLocation.getY() + 5;
+	   	int xMin = cameraLocation.getX() - 4;
+	   	int xMax = cameraLocation.getX() + 4;
+	   	int yMin = cameraLocation.getY() - 3;
+	   	int yMax = cameraLocation.getY() + 4;
 
 	 // Obtenemos los elementos del escenario.
 	   	Enumeration objects1 = GUIHandler.getInstance().getObjects(1).elements();
@@ -100,7 +100,7 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 			Location2D objectLocation = o.getLocation();
 			
 			// Comprobamos si se encuentra dentro del área de dibujado.
-			if(objectLocation.getX() >= xMin -2 && objectLocation.getX() <= xMax +2 && objectLocation.getY() >= yMin - 2 && objectLocation.getY() <= yMax + 2) {
+			if(objectLocation.getX() >= xMin - 1 && objectLocation.getX() <= xMax + 1 && objectLocation.getY() >= yMin - 1 && objectLocation.getY() <= yMax + 1) {
 				// Actualizamos la animación.
 				o.animate();
 				
@@ -124,7 +124,7 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 			Location2D objectLocation = o.getLocation();
 			
 			// Comprobamos si se encuentra dentro del área de dibujado.
-			if(objectLocation.getX() >= xMin -2 && objectLocation.getX() +2 <= xMax && objectLocation.getY() >= yMin -2 && objectLocation.getY() <= yMax +2) {
+			if(objectLocation.getX() >= xMin - 1 && objectLocation.getX() <= xMax + 1 && objectLocation.getY() >= yMin - 1 && objectLocation.getY() <= yMax + 1) {
 				// Actualizamos la animación.
 				o.animate();
 				
@@ -247,6 +247,6 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 
 	// Devuelve la localización de la cámara.
 	public Location2D getCamera() {
-		return this.camera.getLocation();
+		return this.camera.getDestination();
 	}
 }

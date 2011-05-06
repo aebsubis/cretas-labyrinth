@@ -46,7 +46,7 @@ public class Stage {
 	private Scenery[][] scenery;
 	
 	// Matriz de zonas visitadas.
-	private boolean[][] visitedArea;
+	private Scenery[][] visitedArea;
 	
 	// Coordenada de inicio.
 	private Location2D startLocation;
@@ -91,12 +91,6 @@ public class Stage {
 		// End location
 		endLocation = new Location2D(width-2, height-2);
 		
-		// Iniciamos el área visitada.
-		visitedArea = new boolean [width][height];
-		for (int i = 0; i < width; i++)
-			for (int j = 0; j < height; j++)
-				visitedArea[i][j] = false;
-		
 		// Inicializamos el escenario.
 		scenery = new Scenery[width][height];
 		
@@ -114,7 +108,7 @@ public class Stage {
 				}
 				else {
 					
-					// Será pared con un 30% de probabilidades.
+					// Será pared con un 10% de probabilidades.
 					if(getRand(0, 100) > 10) {
 						// Creamos el objeto lógico.
 						scenery[i][j] = new Scenery(objectId,new Location2D(i, j), true);
@@ -130,6 +124,23 @@ public class Stage {
 						GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "wall_rock", 1);
 					}
 				}
+			}
+			
+			elements = new ArrayList();
+		}
+		
+		// Añadimos la niebla.
+		visitedArea = new Scenery [width][height];
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				// Obtenemos un identificador único para el nuevo objeto.
+				double objectId = GameHandler.getInstance().getIdentifier();
+
+				// Creamos el objeto lógico.
+				visitedArea[i][j] = new Scenery(objectId, new Location2D(i, j) , true);
+				
+				// Creamos el objeto gráfico.
+				GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "fog", 2);
 			}
 		}
 		
@@ -160,7 +171,6 @@ public class Stage {
 		GUIHandler.getInstance().registerObject(playerId, player, "player_icaro_stand_front", 2);
 		// Creamos el objeto IA.
 		AIHandler.getInstance().registerObject(AIObject.PLAYER, playerId, player);
-		System.out.println("PlayerID: " + playerId);
 		
 		// Obtenemos la posición inicial de la cámara.
 		Location2D cameraStartLocation = new Location2D(startLocation.getX(), startLocation.getY());
@@ -304,35 +314,60 @@ public class Stage {
 		}
 			
 		// Establecemos el área como visitada.
-		for(int i = -2; i<3; i++)
-			for(int j=-2; j<3; j++)
+		for(int i = -2; i<3; i++) {
+			for(int j=-2; j<3; j++) {
 				if(player.getLocation().getX()+j>=0 
 						&& player.getLocation().getX()+j<width
 						&& player.getLocation().getY()+i>=0
-						&& player.getLocation().getY()+i<height)
-					visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i] = true;
-			
+						&& player.getLocation().getY()+i<height) {
+					if(visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i] != null) {
+						GUIHandler.getInstance().deleteObject(visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i].getId());
+						visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i] = null;
+					}
+				}
+			}
+		}
+					
 		// Actualizamos la cámara.
 		GUIHandler.getInstance().setCamera(player.getLocation(), cameraMovementMode);
+	}
+	
+	// Mueve la cámara.
+	public void moveCamera(int direction) {
+		switch(direction) {
+		case Direction.UP:
+			GUIHandler.getInstance().setCamera(new Location2D(GUIHandler.getInstance().getCamera().getX(),GUIHandler.getInstance().getCamera().getY()-1), cameraMovementMode);
+			break;
+		case Direction.DOWN:
+			GUIHandler.getInstance().setCamera(new Location2D(GUIHandler.getInstance().getCamera().getX(),GUIHandler.getInstance().getCamera().getY()+1), cameraMovementMode);
+			break;
+		case Direction.LEFT:
+			GUIHandler.getInstance().setCamera(new Location2D(GUIHandler.getInstance().getCamera().getX()-1,GUIHandler.getInstance().getCamera().getY()), cameraMovementMode);
+			break;
+		case Direction.RIGHT:
+			GUIHandler.getInstance().setCamera(new Location2D(GUIHandler.getInstance().getCamera().getX()+1, GUIHandler.getInstance().getCamera().getY()), cameraMovementMode);
+			break;
+		case Direction.UPLEFT:
+			GUIHandler.getInstance().setCamera(new Location2D(GUIHandler.getInstance().getCamera().getX()-1, GUIHandler.getInstance().getCamera().getY()-1), cameraMovementMode);
+			break;
+		case Direction.UPRIGHT:
+			GUIHandler.getInstance().setCamera(new Location2D(GUIHandler.getInstance().getCamera().getX()+1, GUIHandler.getInstance().getCamera().getY()-1), cameraMovementMode);
+			break;
+		case Direction.DOWNLEFT:
+			GUIHandler.getInstance().setCamera(new Location2D(GUIHandler.getInstance().getCamera().getX()-1, GUIHandler.getInstance().getCamera().getY()+1), cameraMovementMode);
+			break;
+		case Direction.DOWNRIGHT:
+			GUIHandler.getInstance().setCamera(new Location2D(GUIHandler.getInstance().getCamera().getX()+1, GUIHandler.getInstance().getCamera().getY()+1), cameraMovementMode);
+			break;
+		case Direction.CENTER:
+			GUIHandler.getInstance().setCamera(new Location2D(player.getLocation().getX(), player.getLocation().getY()), cameraMovementMode);
+			break;
+		}
 	}
 	
 	// Devuelve true si la coordenada se encuentra dentro de los límites del mapa.
 	public boolean isOnMap(Location2D location) {
 		return (location.getX() >= 0 && location.getX() < width && location.getY() >= 0 && location.getY() < height);
-	}
-	
-	// Muestra el area visitada por consola.
-	public void showVisitedArea() {
-		for(int i=0;i<height;i++) {
-			for(int j=0;j<width;j++) {
-				if(visitedArea[j][i] == true)
-					System.out.print("#");
-				else
-					System.out.print("·");
-			}
-			System.out.println("");
-		}
-		System.out.println("");System.out.println("");System.out.println("");
 	}
 
 	public void free() {
@@ -340,15 +375,12 @@ public class Stage {
 		GUIHandler.getInstance().deleteAllObjects();
 		
 		// Elimina la información de la pantalla del motor de IA.
-		//AIHandler.getInstance().deleteAllObjects();
+		AIHandler.getInstance().deleteAllObjects();
 		
 		// Desreferenciamos todos los elementos.
-		/*this.completed = false;
-		this.elements.clear();
+		/*this.elements.clear();
 		this.endLocation = null;
 		this.height = 0;
-		this.id = "";
-		this.name = "";
 		this.player = null;
 		this.randomizer = null;
 		this.scenery = null;
@@ -364,5 +396,5 @@ public class Stage {
 		// Comprobamos si se ha completado la pantalla.
 		if(player.getLocation().getX() == width-2 && player.getLocation().getY() == height-2)
 			completed = true;
-	}	
+	}
 }

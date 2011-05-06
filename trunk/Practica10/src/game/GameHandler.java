@@ -53,6 +53,12 @@ public class GameHandler{
 		// Juego no completado.
 		completed = false;
 		
+		// Inicializamos el motor gráfico
+		GUIHandler.getInstance().deleteAllObjects();
+		
+		// Inicializamos el motor de IA.
+		AIHandler.getInstance().deleteAllObjects();
+		
 		// Inicializamos el vector de eventos.
 		pressEvents = new ArrayList();
 		releaseEvents = new ArrayList();
@@ -128,43 +134,43 @@ public class GameHandler{
 		         p.movePlayer(Direction.RIGHT);
 		        break;
 	         case -5:
-	        	 System.out.println("FIRE");
+	        	 //System.out.println("FIRE");
 	        	 break;
 	         case 48:
-	        	 System.out.println("0");
+	        	 //System.out.println("0");
 	        	 break;
 	         case 49:
-	        	 System.out.println("1");
+	        	 p.moveCamera(Direction.UPLEFT);
 	        	 break;
 	         case 50:
-	        	 System.out.println("2");
+	        	 p.moveCamera(Direction.UP);
 	        	 break;
 	         case 51:
-	        	 System.out.println("3");
+	        	 p.moveCamera(Direction.UPRIGHT);
 	        	 break;
 	         case 52:
-	        	 System.out.println("4");
+	        	 p.moveCamera(Direction.LEFT);
 	        	 break;
 	         case 53:
-	        	 System.out.println("5");
+	        	 p.moveCamera(Direction.CENTER);
 	        	 break;
 	         case 54:
-	        	 System.out.println("6");
+	        	 p.moveCamera(Direction.RIGHT);
 	        	 break;
 	         case 55:
-	        	 System.out.println("7");
+	        	 p.moveCamera(Direction.DOWNLEFT);
 	        	 break;
 	         case 56:
-	        	 System.out.println("8");
+	        	 p.moveCamera(Direction.DOWN);
 	        	 break;
 	         case 57:
-	        	 System.out.println("9");
+	        	 p.moveCamera(Direction.DOWNRIGHT);
 	        	 break;
 	         case 35:
-	        	 System.out.println("POUND");
+	        	 //System.out.println("POUND");
 	        	 break;
 	         case 42:
-	        	 System.out.println("STAR");
+	        	 //System.out.println("STAR");
 	        	 break;
 			}
 		}
@@ -174,55 +180,55 @@ public class GameHandler{
 			int event = i.intValue();
 			switch(event) {
 			case -1:
-				System.out.println("UP");
+				//System.out.println("UP");
 	            break;
 	         case -3:
-	        	 System.out.println("LEFT");
+	        	 //System.out.println("LEFT");
 		        break;
 	         case -2:
-	        	 System.out.println("DOWN");
+	        	 //System.out.println("DOWN");
 	            break;
 	         case -4:
-	        	 System.out.println("RIGHT");
+	        	 //System.out.println("RIGHT");
 		        break;
 	         case -5:
-	        	 System.out.println("FIRE");
+	        	 //System.out.println("FIRE");
 	        	 break;
 	         case 48:
-	        	 System.out.println("0");
+	        	 //System.out.println("0");
 	        	 break;
 	         case 49:
-	        	 System.out.println("1");
+	        	 //System.out.println("1");
 	        	 break;
 	         case 50:
-	        	 System.out.println("2");
+	        	 //System.out.println("2");
 	        	 break;
 	         case 51:
-	        	 System.out.println("3");
+	        	 //System.out.println("3");
 	        	 break;
 	         case 52:
-	        	 System.out.println("4");
+	        	 //System.out.println("4");
 	        	 break;
 	         case 53:
-	        	 System.out.println("5");
+	        	 //System.out.println("5");
 	        	 break;
 	         case 54:
-	        	 System.out.println("6");
+	        	 //System.out.println("6");
 	        	 break;
 	         case 55:
-	        	 System.out.println("7");
+	        	 //System.out.println("7");
 	        	 break;
 	         case 56:
-	        	 System.out.println("8");
+	        	 //System.out.println("8");
 	        	 break;
 	         case 57:
-	        	 System.out.println("9");
+	        	 //System.out.println("9");
 	        	 break;
 	         case 35:
-	        	 System.out.println("POUND");
+	        	 //System.out.println("POUND");
 	        	 break;
 	         case 42:
-	        	 System.out.println("STAR");
+	        	 //System.out.println("STAR");
 	        	 break;
 			}
 		}

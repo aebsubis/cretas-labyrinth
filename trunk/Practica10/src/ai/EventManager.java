@@ -24,12 +24,12 @@ public class EventManager {
 	}
 	
 	// Registra un objeto IA
-	public void registerAIObject(AIObject object) {
+	public void registerObject(AIObject object) {
 		objects.put(String.valueOf(object.getId()), object);
 	}
 	
 	// Obtiene el objeto IA del id que recibe como parámetro.
-	public AIObject getAIObject(double objectId) {
+	public AIObject getObject(double objectId) {
 		
 		AIObject o = (AIObject) objects.get(String.valueOf(objectId));
 		
@@ -42,7 +42,7 @@ public class EventManager {
 	}
 	
 	// Elimina el objeto IA del id que recibe como parámetro.
-	public void deleteAIObject(double objectId) {
+	public void deleteObject(double objectId) {
 		AIObject o = (AIObject) objects.get(String.valueOf(objectId));
 		
 		if(o==null) {
@@ -53,11 +53,6 @@ public class EventManager {
 		objects.remove(String.valueOf(objectId));
 	}
 	
-	// Elimina todos los objetos IA.
-	public void clearAIObjects() {
-		objects.clear();
-	}
-	
 	// Actualiza los objetos IA.
 	public void update() {
 		Enumeration e = objects.elements();
@@ -65,5 +60,10 @@ public class EventManager {
 			AIObject o = (AIObject) e.nextElement();
 			o.update();
 		}
+	}
+
+	// Elimina todos los objetos IA.
+	public void deleteAllObjects() {
+		objects.clear();
 	}
 }

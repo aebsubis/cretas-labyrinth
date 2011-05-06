@@ -182,6 +182,10 @@ public class ResourcesHandler{
 		    	//images.put("map_wax", Image.createImage("/element/map_wax.png"));
 				
 				// Escenario
+		    	
+		    	/// Niebla
+		    	images.put("fog", Image.createImage("/scenery/fog.png"));
+		    	
 				/// Suelos
 		    	images.put("floor_sand", Image.createImage("/scenery/floor_sand.png"));
 		    	
@@ -298,6 +302,12 @@ public class ResourcesHandler{
 	    	//images.put("map_wax", Image.createImage("/element/map_wax.png"));
 			
 			// Escenario
+	    	
+	    	/// Niebla
+	    	f = new ArrayList();
+	    	f.add("fog");
+	    	animations.put("fog", f);
+	    	
 			/// Suelos
 	    	f = new ArrayList();
 	    	f.add("floor_sand");
