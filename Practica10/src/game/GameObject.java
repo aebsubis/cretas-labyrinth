@@ -1,8 +1,6 @@
 package game;
 
-import gui.GUIHandler;
 import utils.Location2D;
-import utils.ResourcesHandler;
 
 /**
  * Clase que define los atributos y operaciones básicas de un objeto del juego.
@@ -16,6 +14,10 @@ public abstract class GameObject {
 	
 	// Localización del objeto.
 	private Location2D location;
+	
+	// Delay de la posición.
+	int xDelay;
+	int yDelay;
 	
 	// Construcor por defecto.
 	public GameObject() {
@@ -49,22 +51,23 @@ public abstract class GameObject {
 		this.location = location;
 	}
 	
-	// Desplaza el objeto.
-	public Location2D move(int direction) {
-		switch(direction) {
-		case Direction.UP:
-			location.setY(this.location.getY()-1);
-			break;
-		case Direction.LEFT:
-			location.setX(this.location.getX()-1);
-			break;
-		case Direction.DOWN:
-			location.setY(this.location.getY()+1);
-			break;
-		case Direction.RIGHT:
-			location.setX(this.location.getX()+1);
-			break;
-		}
-		return location;
+	// Obtiene el xDelay.
+	public int getXDelay() {
+		return xDelay;
+	}
+	
+	// Establece el xDelay.
+	public void setXDelay(int x) {
+		this.xDelay = x;
+	}
+	
+	// Obtiene el yDelay.
+	public int getYDelay() {
+		return yDelay;
+	}
+	
+	// Establece el yDelay.
+	public void setYDelay(int y) {
+		this.yDelay = y;
 	}
 }

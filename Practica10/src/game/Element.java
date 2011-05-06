@@ -21,6 +21,9 @@ public class Element extends GameObject{
 	// Indica si se puede mover.
 	private boolean isMovable;
 	
+	// Dirección en la que se mueve.
+	private int movementDirection;
+	
 	// Indica si se puede llevar.
 	private boolean isPortable;
 	
@@ -44,6 +47,7 @@ public class Element extends GameObject{
 		this.speed = 0;
 		this.stamina = 0;
 		this.isMovable = false;
+		this.movementDirection = Direction.DOWN;
 		this.isPortable = false;
 		this.isUsable = false;
 		this.isPassable = false;
@@ -61,6 +65,7 @@ public class Element extends GameObject{
 		this.speed = speed;
 		this.stamina = stamina;
 		this.isMovable = movable;
+		this.movementDirection = Direction.DOWN;
 		this.isPortable = portable;
 		this.isUsable = usable;
 		this.isPassable = passable;
@@ -105,6 +110,16 @@ public class Element extends GameObject{
 	// Establece si el objeto puede moverse.
 	public void setMovable(boolean movable) {
 		isMovable = movable;
+	}
+	
+	// Devuelve la dirección de movimiento.
+	public int getMovementDirection() {
+		return movementDirection;
+	}
+	
+	// Establece la dirección del movimiento.
+	public void setMovementDirection(int direction) {
+		movementDirection = direction;
 	}
 	
 	// Indica si se puede llevar.

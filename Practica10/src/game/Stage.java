@@ -3,12 +3,14 @@ package game;
 import java.util.Random;
 
 import ai.AIHandler;
+import ai.AIObject;
+import ai.Message;
+
 import gui.GUIHandler;
 import gui.GUIScreens;
 import utils.ArrayList;
 import utils.Debugger;
 import utils.Location2D;
-import utils.ResourcesHandler;
 
 /**
  * Clase que contiene la información de una pantalla.
@@ -153,10 +155,12 @@ public class Stage {
 		Location2D playerStartLocation = new Location2D(startLocation.getX(), startLocation.getY());
 		
 		// Creamos el objeto jugador.
-		player = new Element(playerId, playerStartLocation, 5, 10, 100, true, false, false, false, false);
-
+		player = new Element(playerId, playerStartLocation, 5, 2, 100, true, false, false, false, false);
 		// Creamos el objeto gráfico.
 		GUIHandler.getInstance().registerObject(playerId, player, "player_icaro_stand_front", 2);
+		// Creamos el objeto IA.
+		AIHandler.getInstance().registerObject(AIObject.PLAYER, playerId, player);
+		System.out.println("PlayerID: " + playerId);
 		
 		// Obtenemos la posición inicial de la cámara.
 		Location2D cameraStartLocation = new Location2D(startLocation.getX(), startLocation.getY());
@@ -281,90 +285,39 @@ public class Stage {
 	}
 	
 	// Desplaza al jugador si es posible.
-	public boolean movePlayer(int direction) {
-		// Indica si se ha podido mover al jugador.
-		boolean success = false;
-		
-		// Obtenemos la posición del jugador.
-		Location2D pActLoc = player.getLocation();
-		
-		// Posición final del jugador.
-		Location2D pEndLoc = null;
+	public void movePlayer(int direction) {
 		
 		// Intentamos mover al jugador en la dirección indicada.
 		switch(direction) {
 		case Direction.UP:
-			Location2D pFinLocUp = new Location2D(pActLoc.getX(), pActLoc.getY()-1);
-			if(isOnMap(pFinLocUp) && getScenery(pFinLocUp).isPassable()){
-				GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_walk_back"));
-				pEndLoc = player.move(Direction.UP);
-			}
+			AIHandler.getInstance().sendMessage(0, -1, player.getId(), Message.moveUp);
 			break;
 		case Direction.DOWN:
-			Location2D pFinLocDown = new Location2D(pActLoc.getX(), pActLoc.getY()+1);
-			if(isOnMap(pFinLocDown) && getScenery(pFinLocDown).isPassable()) {
-				GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_walk_front"));
-				pEndLoc = player.move(Direction.DOWN);
-			}
+			AIHandler.getInstance().sendMessage(0, -1, player.getId(), Message.moveDown);
 			break;
 		case Direction.LEFT:
-			Location2D pFinLocDownLeft = new Location2D(pActLoc.getX()-1, pActLoc.getY());
-			if(isOnMap(pFinLocDownLeft) && getScenery(pFinLocDownLeft).isPassable()) {
-				GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_walk_left"));
-				pEndLoc = player.move(Direction.LEFT);
-			}
+			AIHandler.getInstance().sendMessage(0, -1, player.getId(), Message.moveLeft);
 			break;
 		case Direction.RIGHT:
-			Location2D pFinLocDownRight = new Location2D(pActLoc.getX()+1, pActLoc.getY());
-			if(isOnMap(pFinLocDownRight) && getScenery(pFinLocDownRight).isPassable()) {
-				GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_walk_right"));
-				pEndLoc = player.move(Direction.RIGHT);
-			}
+			AIHandler.getInstance().sendMessage(0, -1, player.getId(), Message.moveRight);
 			break;
 		}
-		
-		// Comprobamos si se ha podido mover.
-		if(pEndLoc != null) {
-			// Se ha podido mover.
-			success = true;
 			
-			// Establecemos el área como visitada.
-			for(int i = -2; i<3; i++)
-				for(int j=-2; j<3; j++)
-					if(player.getLocation().getX()+j>=0 
-							&& player.getLocation().getX()+j<width
-							&& player.getLocation().getY()+i>=0
-							&& player.getLocation().getY()+i<height)
-						visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i] = true;
+		// Establecemos el área como visitada.
+		for(int i = -2; i<3; i++)
+			for(int j=-2; j<3; j++)
+				if(player.getLocation().getX()+j>=0 
+						&& player.getLocation().getX()+j<width
+						&& player.getLocation().getY()+i>=0
+						&& player.getLocation().getY()+i<height)
+					visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i] = true;
 			
-			// Actualizamos la cámara.
-			GUIHandler.getInstance().setCamera(pEndLoc, cameraMovementMode);
-		}
-		
-		// Devolvemos el resultado.
-		return success;
+		// Actualizamos la cámara.
+		GUIHandler.getInstance().setCamera(player.getLocation(), cameraMovementMode);
 	}
-
-	// Detiene al jugador.
-	public boolean stopPlayer(int direction) {
-		switch(direction) {
-		case Direction.UP:
-			GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_back"));
-			break;
-		case Direction.DOWN:
-			GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_front"));
-			break;
-		case Direction.LEFT:
-			GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_left"));
-			break;
-		case Direction.RIGHT:
-			GUIHandler.getInstance().getObject(player.getId()).setFrames(ResourcesHandler.getInstance().getFrames("player_icaro_stand_right"));
-			break;
-		}
-		return true;
-	}
+	
 	// Devuelve true si la coordenada se encuentra dentro de los límites del mapa.
-	private boolean isOnMap(Location2D location) {
+	public boolean isOnMap(Location2D location) {
 		return (location.getX() >= 0 && location.getX() < width && location.getY() >= 0 && location.getY() < height);
 	}
 	
