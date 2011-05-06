@@ -174,16 +174,16 @@ public class GameHandler{
 			int event = i.intValue();
 			switch(event) {
 			case -1:
-	            p.stopPlayer(Direction.UP);
+				System.out.println("UP");
 	            break;
 	         case -3:
-		         p.stopPlayer(Direction.LEFT);
+	        	 System.out.println("LEFT");
 		        break;
 	         case -2:
-		         p.stopPlayer(Direction.DOWN);
+	        	 System.out.println("DOWN");
 	            break;
 	         case -4:
-		         p.stopPlayer(Direction.RIGHT);
+	        	 System.out.println("RIGHT");
 		        break;
 	         case -5:
 	        	 System.out.println("FIRE");
@@ -291,5 +291,9 @@ public class GameHandler{
 	// Establece si el juego se ha completado.
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
+	}
+	
+	public Phase getCurrentPhase() {
+		return (Phase) phases.get(currentPhase);
 	}
 }

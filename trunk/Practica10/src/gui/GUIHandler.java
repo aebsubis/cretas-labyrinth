@@ -4,12 +4,8 @@ import java.util.Hashtable;
 
 import game.GameHandler;
 import game.GameObject;
-import game.Phase;
 import Practica10;
 import javax.microedition.lcdui.Display;
-
-import utils.ArrayList;
-import utils.Debugger;
 import utils.Location2D;
 
 /**

@@ -1,4 +1,7 @@
 package ai;
+
+import game.Element;
+
 /**
  * 
  * @author Daniel
@@ -24,8 +27,60 @@ public class AIHandler {
 		return aiHandler;
 	}
 
+	// Actualiza las uniades y envía los mensajes aplazados.
 	public void update() {
-		// TODO Auto-generated method stub
+		// Actualizamos las inteligencias artificiales.
+		EventManager.getInstance().update();
 		
+		// Enviamos los mensajes aplazados.
+		IssuerEvent.getInstance().sendDelayedMessages();
+	}
+	
+	public void registerObject(int type, double id, Element e) {
+		AIObject o;
+		
+		/*switch(type) {
+		case AIObject.PLAYER:
+			o = new AIPlayer(id, e);
+			break;
+		case AIObject.BUG:
+			o = new AIBug(id, e);
+			break;
+		case AIObject.SPIDER:
+			o = new AISpider(id, e);
+			break;
+		case AIObject.SNAKE:
+			o = new AISnake(id, e);
+			break;
+		case AIObject.MINOTAUR:
+			o = new AIMinotaur(id, e);
+			break;
+		default:
+			System.out.println("AI type " + type + " does not exists.");
+			exit(-1);
+			break;
+		}*/
+		
+		if(type == AIObject.PLAYER)
+			o = new AIPlayer(id, e);
+		else
+			o = new AIEnemy(id, e);
+		
+		EventManager.getInstance().registerAIObject(o);
+	}
+	
+	// Borra el objeto de la IA.
+	public void deleteObject(double id) {
+		EventManager.getInstance().deleteAIObject(id);
+	}
+	
+	// Devuelve el objeto de la IA.
+	public AIObject getAIObject(double id) {
+		return EventManager.getInstance().getAIObject(id);
+	}
+	
+	// Envía un mensaje.
+	public void sendMessage(double delay, double senderId, double reciverId, int type) {
+		IssuerEvent.getInstance().sendMessage(delay, senderId, reciverId, type);
 	}
 }

@@ -10,7 +10,7 @@ public class GUIObject {
 	// Identificador del objeto.
 	private double id;
 	
-	// Puntero al objeto que representa.
+	// Objeto que representa.
 	private GameObject object;
 	
 	// Identificador de la animación.

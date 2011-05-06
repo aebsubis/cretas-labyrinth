@@ -1,7 +1,6 @@
 package gui;
 
 import java.util.Enumeration;
-import java.util.Hashtable;
 
 import game.GameHandler;
 import javax.microedition.lcdui.Canvas;
@@ -9,7 +8,6 @@ import javax.microedition.lcdui.Command;
 import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
-import utils.ArrayList;
 import utils.Debugger;
 import utils.Location2D;
 import utils.ResourcesHandler;
@@ -102,14 +100,14 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 			Location2D objectLocation = o.getLocation();
 			
 			// Comprobamos si se encuentra dentro del área de dibujado.
-			if(objectLocation.getX() >= xMin && objectLocation.getX() <= xMax && objectLocation.getY() >= yMin && objectLocation.getY() <= yMax) {
+			if(objectLocation.getX() >= xMin -2 && objectLocation.getX() <= xMax +2 && objectLocation.getY() >= yMin - 2 && objectLocation.getY() <= yMax + 2) {
 				// Actualizamos la animación.
 				o.animate();
 				
 				// Lo dibujamos en la zona correspondiente.
 				graphics.drawImage(ResourcesHandler.getInstance().getImage(o.getImage()),
-						GUIHandler.xBlockSize * (objectLocation.getX() - xMin) - camera.getSmoothX(),
-						GUIHandler.yBarSize + (GUIHandler.yBlockSize * (objectLocation.getY() - yMin)) - camera.getSmoothY(),
+						GUIHandler.xBlockSize * (objectLocation.getX() - xMin) - camera.getSmoothX() + o.getObject().getXDelay(),
+						GUIHandler.yBarSize + (GUIHandler.yBlockSize * (objectLocation.getY() - yMin)) - camera.getSmoothY() + o.getObject().getYDelay(),
 						Graphics.LEFT | Graphics.TOP);
 			}
 		}
@@ -126,14 +124,14 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 			Location2D objectLocation = o.getLocation();
 			
 			// Comprobamos si se encuentra dentro del área de dibujado.
-			if(objectLocation.getX() >= xMin && objectLocation.getX() <= xMax && objectLocation.getY() >= yMin && objectLocation.getY() <= yMax) {
+			if(objectLocation.getX() >= xMin -2 && objectLocation.getX() +2 <= xMax && objectLocation.getY() >= yMin -2 && objectLocation.getY() <= yMax +2) {
 				// Actualizamos la animación.
 				o.animate();
 				
 				// Lo dibujamos en la zona correspondiente.
 				graphics.drawImage(ResourcesHandler.getInstance().getImage(o.getImage()),
-						GUIHandler.xBlockSize * (objectLocation.getX() - xMin) - camera.getSmoothX(),
-						GUIHandler.yBarSize + (GUIHandler.yBlockSize * (objectLocation.getY() - yMin)) - camera.getSmoothY(),
+						GUIHandler.xBlockSize * (objectLocation.getX() - xMin) - camera.getSmoothX() + o.getObject().getXDelay(),
+						GUIHandler.yBarSize + (GUIHandler.yBlockSize * (objectLocation.getY() - yMin)) - camera.getSmoothY() + o.getObject().getYDelay(),
 						Graphics.LEFT | Graphics.TOP);
 			}
 		}

@@ -116,12 +116,6 @@ public class Phase {
 		s.movePlayer(direction);
 	}
 
-	// Mueve al personaje.
-	public void stopPlayer(int direction) {
-		Stage s = (Stage) stages.get(currentStage);
-		s.stopPlayer(direction);
-	}
-
 	// Pasa a la siguiente diapositiva.
 	public boolean nextSlide() {
 		return presentation.nextSlide();
@@ -150,5 +144,10 @@ public class Phase {
 	public void free() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	// Devuelve la pantalla actual.
+	public Stage getCurrentStage() {
+		return (Stage) stages.get(currentStage);
 	}
 }
