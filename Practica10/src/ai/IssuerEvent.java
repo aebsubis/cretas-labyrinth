@@ -36,7 +36,7 @@ public class IssuerEvent {
 	public void sendMessage(double delay, double senderId, double reciverId, int type){
 		
 		// Obtenemos el receptor.
-		AIObject reciver = EventManager.getInstance().getAIObject(reciverId);
+		AIObject reciver = EventManager.getInstance().getObject(reciverId);
 		
 		// Comprobamos si existe.
 		if(reciver == null) {
@@ -64,7 +64,7 @@ public class IssuerEvent {
 		for (int i=0; i < delayedMessages.size(); i++) {
 			Message m = (Message)delayedMessages.get(i);
 			if(m.deliveryTime <= actualTime) {
-				AIObject reciver = EventManager.getInstance().getAIObject(m.reciverId);
+				AIObject reciver = EventManager.getInstance().getObject(m.reciverId);
 				
 				// Comprobamos si existe.
 				if(reciver != null) {
@@ -82,5 +82,10 @@ public class IssuerEvent {
 				i--;
 			}
 		}
+	}
+
+	// Limpia los mensajes sin enviar.
+	public void deleteAllMessages() {
+		delayedMessages.clear();
 	}	
 }

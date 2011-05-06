@@ -116,6 +116,12 @@ public class Phase {
 		s.movePlayer(direction);
 	}
 
+	// Mueve la cámara.
+	public void moveCamera(int direction) {
+		Stage s = (Stage) stages.get(currentStage);
+		s.moveCamera(direction);
+	}
+	
 	// Pasa a la siguiente diapositiva.
 	public boolean nextSlide() {
 		return presentation.nextSlide();

@@ -66,17 +66,23 @@ public class AIHandler {
 		else
 			o = new AIEnemy(id, e);
 		
-		EventManager.getInstance().registerAIObject(o);
+		EventManager.getInstance().registerObject(o);
 	}
 	
 	// Borra el objeto de la IA.
 	public void deleteObject(double id) {
-		EventManager.getInstance().deleteAIObject(id);
+		EventManager.getInstance().deleteObject(id);
+	}
+	
+	// Elimina todos los objetos de la IA.
+	public void deleteAllObjects() {
+		EventManager.getInstance().deleteAllObjects();
+		IssuerEvent.getInstance().deleteAllMessages();
 	}
 	
 	// Devuelve el objeto de la IA.
-	public AIObject getAIObject(double id) {
-		return EventManager.getInstance().getAIObject(id);
+	public AIObject getObject(double id) {
+		return EventManager.getInstance().getObject(id);
 	}
 	
 	// Envía un mensaje.
