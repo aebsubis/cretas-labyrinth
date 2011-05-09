@@ -71,10 +71,11 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 	   	
 		// Dibujamos la pantalla.
 		paintScreen(graphics);
-		Debugger.debug.print("GUIGame", "paint", "Ends");
 		
 		// Dibujamos la barra de estado.
 		paintStatusBar(graphics);
+		
+		Debugger.debug.print("GUIGame", "paint", "Ends");
 	}
 
 	private void paintScreen(Graphics graphics) {
@@ -88,53 +89,31 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 	   	int yMin = cameraLocation.getY() - 3;
 	   	int yMax = cameraLocation.getY() + 4;
 
-	 // Obtenemos los elementos del escenario.
-	   	Enumeration objects1 = GUIHandler.getInstance().getObjects(1).elements();
-
-	   	// Dibujamos el escenario.
-	   	while(objects1.hasMoreElements()){
-	   		// Obtenemos el objeto i.
-			GUIObject o = (GUIObject) objects1.nextElement();
-			
-			// Obtenemos la localización del objeto.
-			Location2D objectLocation = o.getLocation();
-			
-			// Comprobamos si se encuentra dentro del área de dibujado.
-			if(objectLocation.getX() >= xMin - 1 && objectLocation.getX() <= xMax + 1 && objectLocation.getY() >= yMin - 1 && objectLocation.getY() <= yMax + 1) {
-				// Actualizamos la animación.
-				o.animate();
+	   	// Obtenemos los elementos del escenario.
+	   	for(int i=0; i< GUIHandler.maxDept; i++) {
+	   		Enumeration objects = GUIHandler.getInstance().getObjects(i).elements();
+	   
+	   		// Dibujamos el escenario.
+		   	while(objects.hasMoreElements()){
+		   		// Obtenemos el objeto i.
+				GUIObject o = (GUIObject) objects.nextElement();
 				
-				// Lo dibujamos en la zona correspondiente.
-				graphics.drawImage(ResourcesHandler.getInstance().getImage(o.getImage()),
-						GUIHandler.xBlockSize * (objectLocation.getX() - xMin) - camera.getSmoothX() + o.getObject().getXDelay(),
-						GUIHandler.yBarSize + (GUIHandler.yBlockSize * (objectLocation.getY() - yMin)) - camera.getSmoothY() + o.getObject().getYDelay(),
-						Graphics.LEFT | Graphics.TOP);
-			}
-		}
-	   	
-	   	// Obtenemos el resto de elementos
-	   	Enumeration objects2 = GUIHandler.getInstance().getObjects(2).elements();
-
-	   	// Dibujamos.
-	   	while(objects2.hasMoreElements()){
-	   		// Obtenemos el objeto i.
-			GUIObject o = (GUIObject) objects2.nextElement();
-			
-			// Obtenemos la localización del objeto.
-			Location2D objectLocation = o.getLocation();
-			
-			// Comprobamos si se encuentra dentro del área de dibujado.
-			if(objectLocation.getX() >= xMin - 1 && objectLocation.getX() <= xMax + 1 && objectLocation.getY() >= yMin - 1 && objectLocation.getY() <= yMax + 1) {
-				// Actualizamos la animación.
-				o.animate();
+				// Obtenemos la localización del objeto.
+				Location2D objectLocation = o.getLocation();
 				
-				// Lo dibujamos en la zona correspondiente.
-				graphics.drawImage(ResourcesHandler.getInstance().getImage(o.getImage()),
-						GUIHandler.xBlockSize * (objectLocation.getX() - xMin) - camera.getSmoothX() + o.getObject().getXDelay(),
-						GUIHandler.yBarSize + (GUIHandler.yBlockSize * (objectLocation.getY() - yMin)) - camera.getSmoothY() + o.getObject().getYDelay(),
-						Graphics.LEFT | Graphics.TOP);
+				// Comprobamos si se encuentra dentro del área de dibujado.
+				if(objectLocation.getX() >= xMin - 1 && objectLocation.getX() <= xMax + 1 && objectLocation.getY() >= yMin - 1 && objectLocation.getY() <= yMax + 1) {
+					// Actualizamos la animación.
+					o.animate();
+					
+					// Lo dibujamos en la zona correspondiente.
+					graphics.drawImage(ResourcesHandler.getInstance().getImage(o.getImage()),
+							GUIHandler.xBlockSize * (objectLocation.getX() - xMin) - camera.getSmoothX() + o.getObject().getXDelay(),
+							GUIHandler.yBarSize + (GUIHandler.yBlockSize * (objectLocation.getY() - yMin)) - camera.getSmoothY() + o.getObject().getYDelay(),
+							Graphics.LEFT | Graphics.TOP);
+				}
 			}
-		}
+	   	}
 	}
 
 	// Dibuja la barra de estado y sus componentes.
@@ -157,28 +136,34 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 	   	
 	   	// Dibujamos el brillo.
 	   	graphics.fillRect(1, 17, getWidth()-1, 1);
-	   	/*		   	
-		// Dibujamos los elementos de la barra de estado.
+	   			   	
+	   	// Establecemos el color negro.
+	   	graphics.setColor(0,0,0);
+	   	
+	   	// Mostramos el nombre de la pantalla.
+	   	graphics.drawString(GameHandler.getInstance().getCurrentPhase().getCurrentStage().getName(), getWidth()/2, 13, Graphics.BASELINE | Graphics.HCENTER);
+	   	
 	   	// Desfase en el eje x en pixels.
 	   	int xDelay = 0;
 	   	
 	   	// Desfase en el eje y en pixels.
-	   	int yDelay = -1;
+	   	//int yDelay = -1;
+	   	int yDelay = 20;
 	   	
 	   	// Obtenemos las vidas del jugador.
-	   	int restLives = stage.getPlayer().getLives();
+	   	int restLives = GameHandler.getInstance().getCurrentPhase().getCurrentStage().getPlayer().getLives();
 
 	   	for(int i=0; i<5; i++) {
 	   		if(restLives >= 2) {
-	   			graphics.drawImage(liveGraphics[0], xDelay+(i*17), yDelay, Graphics.LEFT | Graphics.TOP);
+	   			graphics.drawImage(ResourcesHandler.getInstance().getImage("live_on"), xDelay+(i*17), yDelay, Graphics.LEFT | Graphics.TOP);
 	   			restLives -= 2;
 	   		} else if(restLives == 1) {
-	   			graphics.drawImage(liveGraphics[1], xDelay+(i*17), yDelay, Graphics.LEFT | Graphics.TOP);
+	   			graphics.drawImage(ResourcesHandler.getInstance().getImage("live_half"), xDelay+(i*17), yDelay, Graphics.LEFT | Graphics.TOP);
 	   			restLives--;
 	   		} else {
-	   			graphics.drawImage(liveGraphics[2], xDelay+(i*17), yDelay, Graphics.LEFT | Graphics.TOP);
+	   			graphics.drawImage(ResourcesHandler.getInstance().getImage("live_off"), xDelay+(i*17), yDelay, Graphics.LEFT | Graphics.TOP);
 	   		}	
-	   	}*/
+	   	}
 	}
 
 	// Inicia el render.
@@ -237,6 +222,10 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 		GameHandler.getInstance().addReleaseEvent(keyCode);
 	}
 
+	protected void keyRepeated(int keyCode) {
+		GameHandler.getInstance().addPressEvent(keyCode);
+	}
+	
 	// Establece la localización de la cámara.
 	// El modo 0 traslada la cámara al instante.
 	// El modo 1 traslada la cámara con desplazamiento por bloque.

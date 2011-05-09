@@ -1,7 +1,5 @@
 package game;
 
-import java.util.Random;
-
 import ai.AIHandler;
 import ai.AIObject;
 import ai.Message;
@@ -11,6 +9,7 @@ import gui.GUIScreens;
 import utils.ArrayList;
 import utils.Debugger;
 import utils.Location2D;
+import utils.Randomizer;
 
 /**
  * Clase que contiene la información de una pantalla.
@@ -48,6 +47,9 @@ public class Stage {
 	// Matriz de zonas visitadas.
 	private Scenery[][] visitedArea;
 	
+	// Cantidad de zonas visitadas.
+	int exploredNodes;
+	
 	// Coordenada de inicio.
 	private Location2D startLocation;
 	
@@ -57,18 +59,6 @@ public class Stage {
 	// Indica si se ha completado la pantalla.
 	private boolean completed;
 	
-	/** Devuelve un número aleatorio
-	 **/
-	private Random randomizer = new Random();
-	
-	/**
-	 * Devolver un número aleatorio entre min y max
-	 */
-	private int getRand(int min, int max) {
-		int r = Math.abs(randomizer.nextInt());
-		return (r % (max - min)) + min;
-	}
-	
 	// Constructor por defecto.
 	public Stage() {
 		
@@ -77,13 +67,19 @@ public class Stage {
 	// Inicializa la pantalla.
 	public void init() {
 		Debugger.debug.print("Stage", "Init", "Starts");
-		
+	
 		// Pantalla no completada.
 		completed = false;
+		
+		// Sin nodos explorados.
+		exploredNodes = 0;
 		
 		// Datos de la pantalla (se debe hacer desde el gestor de recursos)
 		width = 10;
 		height = 10;
+	
+		// Nombre de la pantalla.
+		name = "Nombre de prueba";
 		
 		// Start location
 		startLocation = new Location2D(1, 1);
@@ -109,7 +105,7 @@ public class Stage {
 				else {
 					
 					// Será pared con un 10% de probabilidades.
-					if(getRand(0, 100) > 10) {
+					if(Randomizer.getInstance().getRand(0, 100) > 30) {
 						// Creamos el objeto lógico.
 						scenery[i][j] = new Scenery(objectId,new Location2D(i, j), true);
 					
@@ -140,7 +136,7 @@ public class Stage {
 				visitedArea[i][j] = new Scenery(objectId, new Location2D(i, j) , true);
 				
 				// Creamos el objeto gráfico.
-				GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "fog", 2);
+				GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "fog", 4);
 			}
 		}
 		
@@ -159,6 +155,23 @@ public class Stage {
 		
 		
 		// Añadimos los elementos
+		// Añadimos algunos enemigos
+		int numEmemigos = 3;
+		for(int i=0; i<numEmemigos;i++) {
+			double enemyId = GameHandler.getInstance().getIdentifier();
+			
+			// Obtenemos la posición inicial del jugador.
+			Location2D enemyStartLocation = new Location2D(endLocation.getX(), endLocation.getY());
+			
+			// Creamos el objeto jugador.
+			Element enemy = new Element();
+			enemy = new Element(enemyId, enemyStartLocation, 5, 2, 100, true, false, false, false, false);
+			// Creamos el objeto gráfico.
+			GUIHandler.getInstance().registerObject(enemyId, enemy, "enemy_minotaur_stand_front", 2);
+			// Creamos el objeto IA.
+			AIHandler.getInstance().registerObject(AIObject.MINOTAUR, enemyId, enemy);
+		}
+		
 		// Obtenemos un identificador único para el jugador.
 		double playerId = GameHandler.getInstance().getIdentifier();
 		
@@ -172,6 +185,9 @@ public class Stage {
 		// Creamos el objeto IA.
 		AIHandler.getInstance().registerObject(AIObject.PLAYER, playerId, player);
 		
+		// Actualizamos el area visitada.
+		updateVisitedArea();
+		
 		// Obtenemos la posición inicial de la cámara.
 		Location2D cameraStartLocation = new Location2D(startLocation.getX(), startLocation.getY());
 		
@@ -184,6 +200,25 @@ public class Stage {
 		Debugger.debug.print("Stage", "Init", "Ends");
 	}
 	
+	// Actualiza el área visitada.
+	private void updateVisitedArea() {
+		// Establecemos el área como visitada.
+		for(int i = -2; i<3; i++) {
+			for(int j=-2; j<3; j++) {
+				if(player.getLocation().getX()+j>=0 
+						&& player.getLocation().getX()+j<width
+						&& player.getLocation().getY()+i>=0
+						&& player.getLocation().getY()+i<height) {
+					if(visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i] != null) {
+						GUIHandler.getInstance().deleteObject(visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i].getId());
+						visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i] = null;
+						exploredNodes++;
+					}
+				}
+			}
+		}
+	}
+
 	// Obtiene el identificador.
 	public String getId() {
 		return id;
@@ -313,20 +348,8 @@ public class Stage {
 			break;
 		}
 			
-		// Establecemos el área como visitada.
-		for(int i = -2; i<3; i++) {
-			for(int j=-2; j<3; j++) {
-				if(player.getLocation().getX()+j>=0 
-						&& player.getLocation().getX()+j<width
-						&& player.getLocation().getY()+i>=0
-						&& player.getLocation().getY()+i<height) {
-					if(visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i] != null) {
-						GUIHandler.getInstance().deleteObject(visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i].getId());
-						visitedArea[player.getLocation().getX()+j][player.getLocation().getY()+i] = null;
-					}
-				}
-			}
-		}
+		// Actualizamos el área visitada.
+		updateVisitedArea();
 					
 		// Actualizamos la cámara.
 		GUIHandler.getInstance().setCamera(player.getLocation(), cameraMovementMode);

@@ -1,14 +1,7 @@
 package utils;
 
-import game.GameHandler;
 import game.Phase;
-import game.Scenery;
 import game.Stage;
-import gui.GUIHandler;
-
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Hashtable;
 
 import javax.microedition.lcdui.Image;
@@ -139,6 +132,10 @@ public class ResourcesHandler{
 		    	images.put("menu_settings", Image.createImage("/interface/settings.png"));
 		    	images.put("menu_settings_focus", Image.createImage("/interface/settingsFocus.png"));
 
+		    	images.put("live_off", Image.createImage("/interface/liveOff.png"));
+		    	images.put("live_half", Image.createImage("/interface/liveHalf.png"));
+		    	images.put("live_on", Image.createImage("/interface/liveOn.png"));
+		    	
 		    	// Elementos
 		    	images.put("end_level0",Image.createImage("/element/end0.png"));
 		    	images.put("end_level1",Image.createImage("/element/end1.png"));
@@ -167,7 +164,18 @@ public class ResourcesHandler{
 		    	//images.put("enemy_bug", Image.createImage("/element/enemy_bug.png"));
 		    	//images.put("enemy_spider", Image.createImage("/element/enemy_spider.png"));
 		    	//images.put("enemy_snake", Image.createImage("/element/enemy_snake.png"));
-		    	//images.put("enemy_minotaur", Image.createImage("/element/enemy_minotaur.png"));
+		    	images.put("enemy_minotaur_front1", Image.createImage("/element/enemy_minotaur_front1.png"));	
+		    	images.put("enemy_minotaur_front2", Image.createImage("/element/enemy_minotaur_front2.png"));
+		    	images.put("enemy_minotaur_front3", Image.createImage("/element/enemy_minotaur_front3.png"));
+		    	images.put("enemy_minotaur_back1", Image.createImage("/element/enemy_minotaur_back1.png"));	
+		    	images.put("enemy_minotaur_back2", Image.createImage("/element/enemy_minotaur_back2.png"));
+		    	images.put("enemy_minotaur_back3", Image.createImage("/element/enemy_minotaur_back3.png"));
+		    	images.put("enemy_minotaur_right1", Image.createImage("/element/enemy_minotaur_right1.png"));	
+		    	images.put("enemy_minotaur_right2", Image.createImage("/element/enemy_minotaur_right2.png"));
+		    	images.put("enemy_minotaur_right3", Image.createImage("/element/enemy_minotaur_right3.png"));
+		    	images.put("enemy_minotaur_left1", Image.createImage("/element/enemy_minotaur_left1.png"));	
+		    	images.put("enemy_minotaur_left2", Image.createImage("/element/enemy_minotaur_left2.png"));
+		    	images.put("enemy_minotaur_left3", Image.createImage("/element/enemy_minotaur_left3.png"));
 			
 				// Miscelania
 				
@@ -287,8 +295,50 @@ public class ResourcesHandler{
 	    	//images.put("enemy_bug", Image.createImage("/element/enemy_bug.png"));
 	    	//images.put("enemy_spider", Image.createImage("/element/enemy_spider.png"));
 	    	//images.put("enemy_snake", Image.createImage("/element/enemy_snake.png"));
-	    	//images.put("enemy_minotaur", Image.createImage("/element/enemy_minotaur.png"));
-		
+	    	f = new ArrayList();
+	    	f.add("enemy_minotaur_front1");
+	    	animations.put("enemy_minotaur_stand_front", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("enemy_minotaur_back1");
+	    	animations.put("enemy_minotaur_stand_back", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("enemy_minotaur_right1");
+	    	animations.put("enemy_minotaur_stand_right", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("enemy_minotaur_left1");
+	    	animations.put("enemy_minotaur_stand_left", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("enemy_minotaur_front1");
+	    	f.add("enemy_minotaur_front2");
+	    	f.add("enemy_minotaur_front1");
+	    	f.add("enemy_minotaur_front3");
+	    	animations.put("enemy_minotaur_walk_front", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("enemy_minotaur_back1");
+	    	f.add("enemy_minotaur_back2");
+	    	f.add("enemy_minotaur_back1");
+	    	f.add("enemy_minotaur_back3");
+	    	animations.put("enemy_minotaur_walk_back", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("enemy_minotaur_right1");
+	    	f.add("enemy_minotaur_right2");
+	    	f.add("enemy_minotaur_right1");
+	    	f.add("enemy_minotaur_right3");
+	    	animations.put("enemy_minotaur_walk_right", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("enemy_minotaur_left1");
+	    	f.add("enemy_minotaur_left2");
+	    	f.add("enemy_minotaur_left1");
+	    	f.add("enemy_minotaur_left3");
+	    	animations.put("enemy_minotaur_walk_left", f);
+	    	
 			// Miscelania
 			
 			// Objetos del mapa
@@ -423,7 +473,7 @@ public class ResourcesHandler{
 			System.exit(-1);
 		}
 		
-		return s;
+		return s.clone();
 	}
 	
 	// Establece el idioma.

@@ -20,7 +20,7 @@ public class GameHandler{
 	private static GameHandler gameHandler;
 
 	// Contador de identificadores.
-	private static double identifierCounter = 0;
+	private static double identifierCounter;
 	
 	// Fases.
 	private ArrayList phases;
@@ -50,20 +50,39 @@ public class GameHandler{
 	public void init() {	
 		Debugger.debug.print("GameHandler", "Init", "Starts");
 		
+		if(phases!=null) {
+			this.phases.clear();
+			this.phases = null;
+		}
+		
+		if(pressEvents != null) {
+			pressEvents.clear();
+			pressEvents = null;
+		}
+		
+		if(releaseEvents != null) {
+			releaseEvents.clear();
+			releaseEvents = null;
+		}
+		
+		// Eliminamos la información del motor gráfico
+		GUIHandler.getInstance().deleteAllObjects();
+		
+		// Eliminamos la información del motor de IA.
+		AIHandler.getInstance().deleteAllObjects();
+		
+		// Reiniciamos los identificadores.
+		identifierCounter = 0;
+		
 		// Juego no completado.
 		completed = false;
 		
-		// Inicializamos el motor gráfico
-		GUIHandler.getInstance().deleteAllObjects();
-		
-		// Inicializamos el motor de IA.
-		AIHandler.getInstance().deleteAllObjects();
+		// Llamamos al recolector de basura.
+		System.gc();
 		
 		// Inicializamos el vector de eventos.
 		pressEvents = new ArrayList();
 		releaseEvents = new ArrayList();
-		
-		// Inicializamos el ArrayList de fases.
 		phases = new ArrayList();
 		
 		// Añadimos las fases.
@@ -275,6 +294,9 @@ public class GameHandler{
 			currentPhase = 0;
 			setCompleted(true);
 			
+			// Detenemos el juego.
+			GUIHandler.getInstance().stopGame();
+			
 			// Mostrar los créditos y volver al menú.
 			GUIHandler.getInstance().showScreen(GUIScreens.MAINMENU);
 		}
@@ -288,7 +310,7 @@ public class GameHandler{
 		}
 		return next;
 	}
-
+	
 	// Indica si el juego se ha completado
 	public boolean isCompleted() {
 		return completed;
