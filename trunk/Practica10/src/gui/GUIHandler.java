@@ -6,6 +6,8 @@ import game.GameHandler;
 import game.GameObject;
 import Practica10;
 import javax.microedition.lcdui.Display;
+
+import utils.ArrayList;
 import utils.Location2D;
 
 /**
@@ -26,6 +28,9 @@ public class GUIHandler{
 	// Milisegundos por fotograma (40mspf = 15fps)
 	public static final int MS_PER_FRAME = 40;
 	
+	// Profundidad máxima.
+	public static final int maxDept = 5;
+	
 	// Manejador de la interfaz gráfica.
 	private static GUIHandler guiHandler;	
 	
@@ -33,8 +38,7 @@ public class GUIHandler{
 	private Practica10 theMidlet;
 	
 	// GUIObjects
-	private Hashtable objects1;
-	private Hashtable objects2;
+	private ArrayList objects;
 	
 	// Pantallas
 	private GUIMainMenu mainmenuScreen;
@@ -107,8 +111,10 @@ public class GUIHandler{
 		theMidlet = practica9;
 		
 		// Inicializamos el array de objetos.
-		objects1 = new Hashtable();
-		objects2 = new Hashtable();
+		objects = new ArrayList();
+		for(int i=0; i<maxDept; i++) {
+			objects.add(new Hashtable());
+		}
 		
 		// Inicializamos las pantallas.
 		mainmenuScreen = new GUIMainMenu();
@@ -147,55 +153,65 @@ public class GUIHandler{
 	}
 
 	// Registra un objeto gráfico.
-	public void registerObject(double id, GameObject object, String typeId, int i) {
+	public void registerObject(double id, GameObject object, String typeId, int dept) {
 		
 		// Creamos el objeto.
 		GUIObject o = new GUIObject(id, object, typeId);
 
 		// Lo añadimos a la lista de objetos.
-		if(i==1) objects1.put(new Double(id), o);
-		if(i==2) objects2.put(new Double(id), o);
-
+		if(dept>=0 && dept<maxDept) {
+			Hashtable h = (Hashtable)objects.get(dept);
+			h.put(new Double(id), o);
+		} else {
+			System.err.println( "Dept \"" + dept + "\" not suported.");
+			System.exit(-1);
+		}
 	}
 	
 	// Borra el objeto con el identificador indicado.
 	public void deleteObject(double objectId) {
-		GUIObject o1 = (GUIObject) objects1.get(new Double(objectId));
-		if(o1==null) {
-			GUIObject o2 = (GUIObject) objects2.get(new Double(objectId));
-			if(o2==null) {
+		boolean found = false;
+		for(int i=0; i < maxDept && found == false; i++) {
+			Hashtable h = (Hashtable)objects.get(i);
+			GUIObject o = (GUIObject) h.get(new Double(objectId));
+			if(o!=null) {
+				found = true;
+				h.remove(new Double(objectId));
+			}
+		}
+		
+		if(found==false) {
 				System.err.println( "GUIObject \"" + objectId + "\" not found.");
 				System.exit(-1);
-			} else {
-				objects2.remove(new Double(objectId));
-			}
-		} else {			
-			objects1.remove(new Double(objectId));
 		}
 	}
 	
 	// Borra el objeto con el identificador indicado.
 	public GUIObject getObject(double objectId) {
 		GUIObject r = null;
-		GUIObject o1 = (GUIObject) objects1.get(new Double(objectId));
-		if(o1==null) {
-			GUIObject o2 = (GUIObject) objects2.get(new Double(objectId));
-			if(o2==null) {
-				System.err.println( "GUIObject \"" + objectId + "\" not found.");
-				System.exit(-1);
-			} else {
-				r = o2;
+		
+		for(int i=0; i < maxDept && r == null; i++) {
+			Hashtable h = (Hashtable)objects.get(i);
+			GUIObject o = (GUIObject) h.get(new Double(objectId));
+			if(o!=null) {
+				r = o;
 			}
-		} else {
-			r = o1;
 		}
+		
+		if(r==null) {
+			System.err.println( "GUIObject \"" + objectId + "\" not found.");
+			System.exit(-1);
+		}
+	
 		return r;
 	}
 	
 	// Eliminas todos los objetos del manejador gráfico.
 	public void deleteAllObjects() {
-		objects1.clear();
-		objects2.clear();
+		for(int i=0; i<maxDept; i++) {
+			Hashtable h = (Hashtable)objects.get(i);
+			h.clear();
+		}
 	}
 	
 	// Obtenemos la posición de la cámara.
@@ -209,10 +225,15 @@ public class GUIHandler{
 	}
 	
 	// Obtenemos los objetos gráficos.
-	public Hashtable getObjects(int i) {
+	public Hashtable getObjects(int dept) {
 		Hashtable r = null;
-		if(i==1)r = this.objects1;
-		else if(i==2) r = this.objects2;
+		
+		if(dept>=0 && dept<maxDept) {
+			r = (Hashtable)objects.get(dept);
+		} else {
+			System.err.println( "Dept \"" + dept + "\" not suported.");
+			System.exit(-1);
+		}
 		return r;
 	}
 

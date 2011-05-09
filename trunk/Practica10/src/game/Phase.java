@@ -156,4 +156,11 @@ public class Phase {
 	public Stage getCurrentStage() {
 		return (Stage) stages.get(currentStage);
 	}
+
+	public Phase clone() {
+		Phase p = new Phase();
+		p.setId(this.id);
+		p.setName(this.name);
+		return p;
+	}
 }

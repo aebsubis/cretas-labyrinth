@@ -64,7 +64,7 @@ public class AIHandler {
 		if(type == AIObject.PLAYER)
 			o = new AIPlayer(id, e);
 		else
-			o = new AIEnemy(id, e);
+			o = new AIMinotaur(id, e);
 		
 		EventManager.getInstance().registerObject(o);
 	}
