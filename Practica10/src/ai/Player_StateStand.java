@@ -52,16 +52,19 @@ public class Player_StateStand extends State{
 	}
 	
 	public boolean onMessage(AIObject o, Message m) {
+		// Indica si el mensaje ha podido ser manejado.
 		boolean handled = true;
+
+		// Obtenemos la posición del jugador.
+		Location2D pActLoc = o.element.getLocation();
+		
+		// Obtenemos la escena.
+		Stage stage = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
+		
 		switch(m.type) {
 		case Message.moveUp:
-			// Obtenemos la posición del jugador.
-			Location2D pActLoc1 = o.element.getLocation();
-			
-			// Comprobamos si se puede realizar el movimiento.
-			Location2D pFinLocUp = new Location2D(pActLoc1.getX(), pActLoc1.getY()-1);
-			Stage s1 = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
-			if(s1.isOnMap(pFinLocUp) && s1.getScenery(pFinLocUp).isPassable()){
+			// Comprobamos si se puede realizar el movimiento.			
+			if(stage.isPassable(new Location2D(pActLoc.getX(), pActLoc.getY()-1))){
 				// Establecemos la dirección del movimiento.
 				o.element.setMovementDirection(Direction.UP);
 				
@@ -70,12 +73,8 @@ public class Player_StateStand extends State{
 			}
 			break;
 		case Message.moveDown:
-			// Obtenemos la posición del jugador.
-			Location2D pActLoc2 = o.element.getLocation();
-			
-			Location2D pFinLocDown = new Location2D(pActLoc2.getX(), pActLoc2.getY()+1);
-			Stage s2 = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
-			if(s2.isOnMap(pFinLocDown) && s2.getScenery(pFinLocDown).isPassable()) {
+			// Comprobamos si se puede realizar el movimiento.			
+			if(stage.isPassable(new Location2D(pActLoc.getX(), pActLoc.getY()+1))) {
 				// Establecemos la dirección del movimiento.
 				o.element.setMovementDirection(Direction.DOWN);
 				
@@ -84,12 +83,8 @@ public class Player_StateStand extends State{
 			}
 			break;
 		case Message.moveLeft:
-			// Obtenemos la posición del jugador.
-			Location2D pActLoc3 = o.element.getLocation();
-			
-			Location2D pFinLocDownLeft = new Location2D(pActLoc3.getX()-1, pActLoc3.getY());
-			Stage s3 = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
-			if(s3.isOnMap(pFinLocDownLeft) && s3.getScenery(pFinLocDownLeft).isPassable()) {
+			// Comprobamos si se puede realizar el movimiento.			
+			if(stage.isPassable(new Location2D(pActLoc.getX()-1, pActLoc.getY()))) {
 				// Establecemos la dirección del movimiento.
 				o.element.setMovementDirection(Direction.LEFT);
 				
@@ -97,19 +92,67 @@ public class Player_StateStand extends State{
 				o.stateMachine.changeState(Player_StateMove.getInstance(), o);
 			}
 			break;
-		case Message.moveRight:
-			// Obtenemos la posición del jugador.
-			Location2D pActLoc4 = o.element.getLocation();
-			
-			Location2D pFinLocDownRight = new Location2D(pActLoc4.getX()+1, pActLoc4.getY());
-			Stage s4 = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
-			if(s4.isOnMap(pFinLocDownRight) && s4.getScenery(pFinLocDownRight).isPassable()) {
+		case Message.moveRight:			
+			// Comprobamos si se puede realizar el movimiento.
+			if(stage.isPassable(new Location2D(pActLoc.getX()+1, pActLoc.getY()))) {
 				// Establecemos la dirección del movimiento.
 				o.element.setMovementDirection(Direction.RIGHT);
 				
 				// Hacemos que el jugador se desplace.
 				o.stateMachine.changeState(Player_StateMove.getInstance(), o);
 			}
+			break;
+		case Message.recivedImpact:
+			System.out.println("Impacto recibido");
+			
+			// Restamos una vida.
+			o.element.setLives(o.element.getLives()-1);
+			
+			// Desplazamos al personaje en la dirección del golpe si es posible.
+			switch(AIHandler.getInstance().getObject(m.senderId).element.getMovementDirection()) {
+			case Direction.UP:				
+				// Comprobamos si se puede realizar el movimiento.
+				if(stage.isPassable(new Location2D(pActLoc.getX(), pActLoc.getY()-1))){
+					// Establecemos la dirección del movimiento.
+					o.element.setMovementDirection(Direction.UP);
+					
+					// Hacemos que el jugador se desplace.
+					o.stateMachine.changeState(Player_StateBoost.getInstance(), o);
+				}
+				break;
+			case Direction.DOWN:
+				// Comprobamos si se puede realizar el movimiento.
+				if(stage.isPassable(new Location2D(pActLoc.getX(), pActLoc.getY()+1))){
+					// Establecemos la dirección del movimiento.
+					o.element.setMovementDirection(Direction.DOWN);
+					
+					// Hacemos que el jugador se desplace.
+					o.stateMachine.changeState(Player_StateBoost.getInstance(), o);
+				}
+				break;
+			case Direction.LEFT:
+				// Comprobamos si se puede realizar el movimiento.
+				if(stage.isPassable(new Location2D(pActLoc.getX()-1, pActLoc.getY()))){
+					// Establecemos la dirección del movimiento.
+					o.element.setMovementDirection(Direction.LEFT);
+					
+					// Hacemos que el jugador se desplace.
+					o.stateMachine.changeState(Player_StateBoost.getInstance(), o);
+				}
+				break;
+			case Direction.RIGHT:
+				// Comprobamos si se puede realizar el movimiento.
+				if(stage.isPassable(new Location2D(pActLoc.getX()+1, pActLoc.getY()))){
+					// Establecemos la dirección del movimiento.
+					o.element.setMovementDirection(Direction.RIGHT);
+					
+					// Hacemos que el jugador se desplace.
+					o.stateMachine.changeState(Player_StateBoost.getInstance(), o);
+				}
+				break;
+			}
+			
+			
 			break;
 		default:
 			// No se pudo manejar ese tipo de mensaje.
