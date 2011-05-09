@@ -339,6 +339,33 @@ public class ResourcesHandler{
 	    	f.add("enemy_minotaur_left3");
 	    	animations.put("enemy_minotaur_walk_left", f);
 	    	
+	    	f = new ArrayList();
+	    	f.add("enemy_minotaur_left1");
+	    	f.add("enemy_minotaur_left1");
+	    	f.add("enemy_minotaur_left1");
+	    	f.add("enemy_minotaur_left1");
+	    	f.add("enemy_minotaur_left1");
+	    	f.add("enemy_minotaur_left1");
+	    	f.add("enemy_minotaur_right1");
+	    	f.add("enemy_minotaur_right1");
+	    	f.add("enemy_minotaur_right1");
+	    	f.add("enemy_minotaur_right1");
+	    	f.add("enemy_minotaur_right1");
+	    	f.add("enemy_minotaur_right1");
+	    	f.add("enemy_minotaur_front1");
+	    	f.add("enemy_minotaur_front1");
+	    	f.add("enemy_minotaur_front1");
+	    	f.add("enemy_minotaur_front1");
+	    	f.add("enemy_minotaur_front1");
+	    	f.add("enemy_minotaur_front1");
+	    	f.add("enemy_minotaur_back1");
+	    	f.add("enemy_minotaur_back1");
+	    	f.add("enemy_minotaur_back1");
+	    	f.add("enemy_minotaur_back1");
+	    	f.add("enemy_minotaur_back1");
+	    	f.add("enemy_minotaur_back1");
+	    	animations.put("enemy_minotaur_take_break", f);
+	    	
 			// Miscelania
 			
 			// Objetos del mapa

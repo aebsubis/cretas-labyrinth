@@ -1,6 +1,7 @@
 package ai;
 
 import game.Direction;
+import game.Element;
 import game.GameHandler;
 import game.Stage;
 import gui.GUIHandler;
@@ -45,74 +46,72 @@ public class Minotaur_StateStand extends State{
 	
 	// Acciones a ejecutar mientras se permanece en el estado.
 	public void execute(AIObject o) {
-		// Examinar alrededores.
-		// Tomarse un descanso
-		// Moverse
 		
-		// Toma una dirección aleatoria e intenta moverse.
-		int r = Randomizer.getInstance().getRand(0,4);
-		switch(r){
-		case Direction.UP:
+		// Obtenemos la pantalla.
+		Stage stage = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
+		
+		// Objeto jugador.
+		Element player = GameHandler.getInstance().getCurrentPhase().getCurrentStage().getPlayer();
 
-			// Obtenemos la posición del enemigo.
-			Location2D pActLoc1 = o.element.getLocation();
+		// Posición del jugador.
+		Location2D playerLocation = player.getLocation();
+		
+		// Posición del enemigo.
+		Location2D pActLoc = o.element.getLocation();
+		
+		// Comprobamos si están en la misma posición.
+		if(playerLocation.equals(pActLoc)) {
 			
-			// Comprobamos si se puede realizar el movimiento.
-			Location2D pFinLocUp = new Location2D(pActLoc1.getX(), pActLoc1.getY()-1);
-			Stage s1 = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
-			if(s1.isOnMap(pFinLocUp) && s1.getScenery(pFinLocUp).isPassable()){
-				// Establecemos la dirección del movimiento.
-				o.element.setMovementDirection(Direction.UP);
-				
-				// Hacemos que el enemigo se desplace.
-				o.stateMachine.changeState(Minotaur_StateMove.getInstance(), o);
+			// Dañamos al personaje.
+			AIHandler.getInstance().sendMessage(0, o.getId(), player.getId(), Message.recivedImpact);
+		}
+		
+		// Con una probabilidad del 5% se toma un descanso.
+		if(Randomizer.getInstance().getRand(0, 100) < 5) {
+			// Se toma un descanso.
+			o.stateMachine.changeState(Minotaur_StateBreak.getInstance(), o);
+		} else {
+			// Toma una dirección aleatoria e intenta moverse.
+			int r = Randomizer.getInstance().getRand(0,4);
+			switch(r){
+			case Direction.UP:			
+				// Comprobamos si se puede realizar el movimiento.
+				if(stage.isPassable(new Location2D(pActLoc.getX(), pActLoc.getY()-1))){
+					// Establecemos la dirección del movimiento.
+					o.element.setMovementDirection(Direction.UP);
+					
+					// Hacemos que el enemigo se desplace.
+					o.stateMachine.changeState(Minotaur_StateMove.getInstance(), o);
+				}
+				break;
+			case Direction.DOWN:
+				if(stage.isPassable(new Location2D(pActLoc.getX(), pActLoc.getY()+1))) {
+					// Establecemos la dirección del movimiento.
+					o.element.setMovementDirection(Direction.DOWN);
+					
+					// Hacemos que el enemigo se desplace.
+					o.stateMachine.changeState(Minotaur_StateMove.getInstance(), o);
+				}
+				break;
+			case Direction.LEFT:
+				if(stage.isPassable(new Location2D(pActLoc.getX()-1, pActLoc.getY()))) {
+					// Establecemos la dirección del movimiento.
+					o.element.setMovementDirection(Direction.LEFT);
+					
+					// Hacemos que el enemigo se desplace.
+					o.stateMachine.changeState(Minotaur_StateMove.getInstance(), o);
+				}
+				break;
+			case Direction.RIGHT:
+				if(stage.isPassable(new Location2D(pActLoc.getX()+1, pActLoc.getY()))) {
+					// Establecemos la dirección del movimiento.
+					o.element.setMovementDirection(Direction.RIGHT);
+					
+					// Hacemos que el enemigo se desplace.
+					o.stateMachine.changeState(Minotaur_StateMove.getInstance(), o);
+				}
+				break;
 			}
-			break;
-		case Direction.DOWN:
-
-			// Obtenemos la posición del enemigo.
-			Location2D pActLoc2 = o.element.getLocation();
-			
-			Location2D pFinLocDown = new Location2D(pActLoc2.getX(), pActLoc2.getY()+1);
-			Stage s2 = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
-			if(s2.isOnMap(pFinLocDown) && s2.getScenery(pFinLocDown).isPassable()) {
-				// Establecemos la dirección del movimiento.
-				o.element.setMovementDirection(Direction.DOWN);
-				
-				// Hacemos que el enemigo se desplace.
-				o.stateMachine.changeState(Minotaur_StateMove.getInstance(), o);
-			}
-			break;
-		case Direction.LEFT:
-
-			// Obtenemos la posición del enemigo.
-			Location2D pActLoc3 = o.element.getLocation();
-			
-			Location2D pFinLocDownLeft = new Location2D(pActLoc3.getX()-1, pActLoc3.getY());
-			Stage s3 = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
-			if(s3.isOnMap(pFinLocDownLeft) && s3.getScenery(pFinLocDownLeft).isPassable()) {
-				// Establecemos la dirección del movimiento.
-				o.element.setMovementDirection(Direction.LEFT);
-				
-				// Hacemos que el enemigo se desplace.
-				o.stateMachine.changeState(Minotaur_StateMove.getInstance(), o);
-			}
-			break;
-		case Direction.RIGHT:
-
-			// Obtenemos la posición del enemigo.
-			Location2D pActLoc4 = o.element.getLocation();
-			
-			Location2D pFinLocDownRight = new Location2D(pActLoc4.getX()+1, pActLoc4.getY());
-			Stage s4 = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
-			if(s4.isOnMap(pFinLocDownRight) && s4.getScenery(pFinLocDownRight).isPassable()) {
-				// Establecemos la dirección del movimiento.
-				o.element.setMovementDirection(Direction.RIGHT);
-				
-				// Hacemos que el enemigo se desplace.
-				o.stateMachine.changeState(Minotaur_StateMove.getInstance(), o);
-			}
-			break;
 		}
 	}
 	

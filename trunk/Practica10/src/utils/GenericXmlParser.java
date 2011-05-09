@@ -1,3 +1,11 @@
+package utils;
+
+import java.io.*;
+import javax.microedition.io.*;
+
+import org.kxml.*;
+import org.kxml.parser.*;
+
 /*package utils;
 import org.kxml2.io.KXmlParser;
 import org.xmlpull.v1.XmlPullParser;

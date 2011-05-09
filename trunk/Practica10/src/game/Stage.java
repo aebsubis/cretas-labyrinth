@@ -59,6 +59,9 @@ public class Stage {
 	// Indica si se ha completado la pantalla.
 	private boolean completed;
 	
+	// Indica si se ha perdido la pantalla.
+	private boolean defeated;
+	
 	// Constructor por defecto.
 	public Stage() {
 		
@@ -70,6 +73,9 @@ public class Stage {
 	
 		// Pantalla no completada.
 		completed = false;
+		
+		// Pantalla no perdida.
+		defeated = false;
 		
 		// Sin nodos explorados.
 		exploredNodes = 0;
@@ -156,7 +162,7 @@ public class Stage {
 		
 		// Añadimos los elementos
 		// Añadimos algunos enemigos
-		int numEmemigos = 3;
+		int numEmemigos = 1;
 		for(int i=0; i<numEmemigos;i++) {
 			double enemyId = GameHandler.getInstance().getIdentifier();
 			
@@ -329,10 +335,18 @@ public class Stage {
 		this.completed = completed;
 	}
 	
-	// Desplaza al jugador si es posible.
+	// Obtiene si se ha perdido la pantalla.
+	public boolean isDefeated() {
+		return defeated;
+	}
+	
+	// Establece si se ha perdido la pantalla.
+	public void setDefeated(boolean defeated) {
+		this.defeated = defeated;
+	}
+	
+	// Intenta desplazar al jugador.
 	public void movePlayer(int direction) {
-		
-		// Intentamos mover al jugador en la dirección indicada.
 		switch(direction) {
 		case Direction.UP:
 			AIHandler.getInstance().sendMessage(0, -1, player.getId(), Message.moveUp);
@@ -389,11 +403,13 @@ public class Stage {
 	}
 	
 	// Devuelve true si la coordenada se encuentra dentro de los límites del mapa.
-	public boolean isOnMap(Location2D location) {
+	private boolean isOnMap(Location2D location) {
 		return (location.getX() >= 0 && location.getX() < width && location.getY() >= 0 && location.getY() < height);
 	}
 
+	// Libera los recursos del juego.
 	public void free() {
+		
 		// Elimina la información de la pantalla del motor gráfico.
 		GUIHandler.getInstance().deleteAllObjects();
 		
@@ -415,9 +431,37 @@ public class Stage {
 		System.gc();*/
 	}
 
+	// Actualiza el juego.
 	public void update() {
+		// Comprobamos si ha muerto el jugador.
+		if(player.getLives() <= 0)
+			defeated = true;
+		
 		// Comprobamos si se ha completado la pantalla.
 		if(player.getLocation().getX() == width-2 && player.getLocation().getY() == height-2)
 			completed = true;
+		
+		// Activamos los disparadores.
+		/*if(!completed && !defeated) {
+			for(int i=0; i<triggers.size(); i++) {
+				triggers.get(i).check();
+			}
+		}*/
+	}
+
+	public boolean isPassable(Location2D location) {
+		boolean passable = true;
+		
+		if(!isOnMap(location))
+			passable = false;
+		if(passable == true && !getScenery(location).isPassable())
+			passable = false;
+		for(int i=0;passable == true && i<elements.size();i++) {
+			Element e = (Element) elements.get(i);
+			if(e.isPassable() == false)
+				passable = false;
+		}
+
+		return passable;
 	}
 }

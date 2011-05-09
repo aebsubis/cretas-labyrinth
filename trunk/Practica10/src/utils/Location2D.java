@@ -56,4 +56,8 @@ public class Location2D {
 		x = this.x;
 		y = this.y;
 	}
+	
+	public boolean equals(Location2D loc) {
+		return(this.x == loc.x && this.y == loc.y);
+	}
 }
