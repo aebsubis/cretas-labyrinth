@@ -111,7 +111,7 @@ public class Stage {
 				else {
 					
 					// Será pared con un 10% de probabilidades.
-					if(Randomizer.getInstance().getRand(0, 100) > 30) {
+					if(Randomizer.getInstance().getRand(0, 100) > 10) {
 						// Creamos el objeto lógico.
 						scenery[i][j] = new Scenery(objectId,new Location2D(i, j), true);
 					

@@ -36,16 +36,16 @@ public class Phase {
 	public void init() {		
 		Debugger.debug.print("Phase", "Init", "Starts");
 		
-		// Inicializamos el array de las pantallas.
-		stages = ResourcesHandler.getInstance().getStages(id);
-		
 		// Establecemos la primera pantalla como actual.
 		currentStage = 0;
 		
-		// Obtener datos de la presentación desde el gestor de recursos.
+		// Obtenemos las pantallas.
+		stages = ResourcesHandler.getInstance().getStages(id);
 		
-		// Inicializamos la presentación.
-		presentation = new Presentation();
+		// Obtenemos la presentación.
+		presentation = new Presentation(id);
+		
+		// Iniciamos la presentación.
 		presentation.init();
 		
 		Debugger.debug.print("Phase", "Init", "Ends");
