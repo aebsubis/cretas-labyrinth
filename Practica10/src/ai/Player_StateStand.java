@@ -103,8 +103,7 @@ public class Player_StateStand extends State{
 			}
 			break;
 		case Message.recivedImpact:
-			System.out.println("Impacto recibido");
-			
+
 			// Restamos una vida.
 			o.element.setLives(o.element.getLives()-1);
 			

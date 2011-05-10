@@ -1,6 +1,7 @@
 package utils;
 
 import game.Phase;
+import game.Slide;
 import game.Stage;
 import java.util.Hashtable;
 
@@ -57,16 +58,10 @@ public class ResourcesHandler{
 	}
 	
 	// Carga todos los recursos.
-	public boolean init() {
-		
-		// Indica si se ha podido inicializar.
-		boolean result = false;
+	public void init() {
 		
 		// Comprobamos que no haya sido inicializado todavía.
 		if (initalizated == false) {
-			
-			// Se ha podido inicializar.
-			result = true;
 			
 			// Establecemos el manejador como inicializado.
 			initalizated = true;
@@ -74,7 +69,7 @@ public class ResourcesHandler{
 			// Lenguaje por defecto.
 			languaje = CASTELLANO;
 			
-			// Textos
+			// Textos genéricos
 			textos = new Hashtable();
 			texts = new Hashtable();
 			
@@ -111,10 +106,114 @@ public class ResourcesHandler{
 			textos.put("game_title", "El laberinto de Creta");
 			texts.put("game_title", "Creta's labyrinth");
 			
+			// Nombres de fases.
+			textos.put("phase_training1_name", "Entrenamiento 1");
+			texts.put("phase_training1_name", "Training 1");
+			
+			textos.put("phase_training2_name", "Entrenamiento 2");
+			texts.put("phase_training2_name", "Training 2");
+			
+			textos.put("phase_training1_name", "Entrenamiento 2");
+			texts.put("phase_training1_name", "Training 2");
+			
+			textos.put("phase_icaro_dedalos_name", "La leyenda de Ícaro y Dédalos");
+			texts.put("phase_icaro_dedalos_name", "The legend of Icarus and Daedalus");
+			
+			textos.put("phase_icaro_dedalos_name", "La leyenda de Teseo");
+			texts.put("phase_icaro_dedalos_name", "The legend of Theseus");
+
+			// Nombres de pantallas.
+			textos.put("stage_training1_name", "Entrenamiento 1");
+			texts.put("stage_training1_name", "Training 1");
+			
+			textos.put("stage_training2_name", "Entrenamiento 2");
+			texts.put("stage_training2_name", "Training 2");
+			
+			textos.put("stage_training3_name", "Entrenamiento 31");
+			texts.put("stage_training3_name", "Training 3");
+			
+			textos.put("phase_icaro_dedalos1_name", "Encerrados");
+			texts.put("phase_icaro_dedalos1_name", "Locked");
+			
+			textos.put("phase_icaro_dedalos2_name", "Encuentra a tu padre");
+			texts.put("phase_icaro_dedalos2_name", "Find your father");
+			
+			textos.put("phase_icaro_dedalos3_name", "Construye tu libertad");
+			texts.put("phase_icaro_dedalos3_name", "Build your freedom");
+			
+			textos.put("phase_icaro_dedalos4_name", "Busqueda de materiales I");
+			texts.put("phase_icaro_dedalos4_name", "Search for materials I");
+			
+			textos.put("phase_icaro_dedalos5_name", "Busqueda de materiales II");
+			texts.put("phase_icaro_dedalos5_name", "Search for materials II");
+			
+			textos.put("phase_icaro_dedalos6_name", "Busqueda de materiales III");
+			texts.put("phase_icaro_dedalos6_name", "Search for materials III");
+			
+			textos.put("phase_icaro_dedalos7_name", "Busqueda de materiales IV");
+			texts.put("phase_icaro_dedalos7_name", "Search for materials IV");
+			
+			textos.put("phase_icaro_dedalos8_name", "Cuidado con el Minotauro");
+			texts.put("phase_icaro_dedalos8_name", "Beware of Minotaur");
+			
+			textos.put("phase_icaro_dedalos9_name", "Vuela lejos");
+			texts.put("phase_icaro_dedalos9_name", "Fly away");
+			
+			textos.put("phase_teseo1_name", "Proximamente");
+			texts.put("phase_teseo1_name", "Comming soon");
+			
+			// Textos de diapositivas.
 			textos.put("slide_1", "Diapositiva 1");
 			texts.put("slide_1", "Slide 1");
 			textos.put("slide_2", "Diapositiva 2");
 			texts.put("slide_2", "Slide 2");
+			
+			textos.put("training1_text1", "Este es el personaje principal.");
+			texts.put("training1_text1", "This is the main character.");
+			textos.put("training1_text2", "Para desplazarte pulsa los botones\narriba, abajo, derecha e izquierda.");
+			texts.put("training1_text2", "Press the buttons to scroll up, down,\nleft and right.");
+			textos.put("training1_text3", "Encuentra la salida de este nivel\npara pasar al siguiente.");
+			texts.put("training1_text3", "Find out at this level to the next.");
+			
+			textos.put("training2_text1", "Estos corazones indican tu nivel\nde salud actual.");
+			texts.put("training2_text1", "These cores indicate your current\nhealth level.");
+			textos.put("training2_text2", "Cada vez que recibes un impacto de\nun enemigo pierdes puntos de salud.");
+			texts.put("training2_text2", "Every time you get an impact of an\nenemy lose health points.");
+			textos.put("training2_text3", "Si te quedas sin salud\npierdes la partida.");
+			texts.put("training2_text3", "If you lose your health\nyou lose the game.");
+			
+			textos.put("training3_text1", "En ocasiones puede que necesites\nexplorar el mapa para orientarte.\nPara ello utiliza el teclado numérico.");
+			texts.put("training3_text1", "Sometimes you may need to explore\nthe map for orientation.\nIt uses the numeric keypad.");
+			textos.put("training3_text2", "Para centrar la cámara de nuevo en\nel personaje pulsa el botón 5.");
+			texts.put("training3_text2", "To focus the camera back into character\npress the 5 button.");
+			
+			textos.put("icaro_dedalos_text1", "Minos, hijo de Zeus y de Europa\npidió a Poseidón apoyo para\nsuceder al rey Asterión de Creta.");
+			texts.put("icaro_dedalos_text1", "Minos, son of Zeus and Europe\ncalled to Poseidon support to\nsucceed the king of Crete Asterion.");
+			textos.put("icaro_dedalos_text2", "Poseidón lo escuchó e hizo salir de\nlos mares un hermoso toro blanco\nal cual Minos prometió sacrificar.");
+			texts.put("icaro_dedalos_text2", "Poseidon heard him and made out of\nthe sea a beautiful white bull\nwhich Minos promised to sacrifice.");
+			textos.put("icaro_dedalos_text3", "Sin embargo, maravillado por sus\ncualidades, lo ocultó entre su rebaño\ny sacrificó a otro en su lugar.");
+			texts.put("icaro_dedalos_text3", "However, amazed by his qualities,\nhe hid from his herd and sacrificed\nanother in his place.");
+			textos.put("icaro_dedalos_text4", "Al saberlo Poseidón inspiró en su\nesposa un deseo incontenible por el\ntoro y nació el Minotauro.");
+			texts.put("icaro_dedalos_text4", "Upon hearing, Poseidon inspired in\nhis wife an overwhelming desire for\nthe bull and the Minotaur was born.");
+			textos.put("icaro_dedalos_text5", "El Minotauro era una bestia feroz\nque sólo comía carne humana y\nsegún crecía se volvía más salvaje.");
+			texts.put("icaro_dedalos_text5", "The Minotaur was a beast that ate\nhuman flesh and only grew as it\nbecame more savage.");
+			textos.put("icaro_dedalos_text6", "Para que nadie conociera el secreto\ndel laberinto, mandó encerrar a\nDédalo junto a su hijo Ícaro en él.");
+			texts.put("icaro_dedalos_text6", "So that no one knew the secret of\nthe labyrinth, lock ordered Daedalus\nwith his son Icarus in it.");
+			
+			textos.put("teseo_text1", "Androgeno, hijo de Minos, fue\nasesinado en Atenas después de\nuna competición olímpica donde\nquedó campeón.");
+			texts.put("teseo_text1", ".");
+			textos.put("teseo_text2", "Minos lanzó su flota contra las\ncostas de Grecia, conquistando\nMegara y asedió Atenas.");
+			texts.put("teseo_text2", ".");
+			textos.put("teseo_text3", "Los atenienses consultaron el\noráculo y aceptaron las condiciones\nque Minosles impuso.");
+			texts.put("teseo_text3", ".");
+			textos.put("teseo_text4", "Cada nueve años siete doncellas y\nsiete donceles serían destinados\na ser devorados por el Minotauro.");
+			texts.put("teseo_text4", ".");
+			textos.put("teseo_text5", "El tributo se suspendería si\nalguno de ellos lograba escapar\ndel laberinto.");
+			texts.put("teseo_text5", ".");
+			textos.put("teseo_text6", "Teseo, con el consentimiento de su\npadre el rey Egeo, se hizo designar\ncomo uno de los siete jóvenes.");
+			texts.put("teseo_text6", ".");
+			textos.put("teseo_text7", "Ariadna, hija de Minos, se enamoró\nde Teseo y le ofreció un ovillo con el\nque guiarse para salir y una espada\nmágica para matar al Minotauro.");
+			texts.put("teseo_text7", ".");
 			
 			// Imágenes estáticas.
 			images = new Hashtable();
@@ -213,8 +312,31 @@ public class ResourcesHandler{
 		    	//images.put("nature_waterfall", Image.createImage("/scenery/nature_waterfall.png"));
 		    	
 		    	// Presentaciones
-		    	images.put("slide_1", Image.createImage("/phases/icaro_dedalos/presentation/slide1.png"));
-		    	images.put("slide_2", Image.createImage("/phases/icaro_dedalos/presentation/slide2.png"));
+		    	images.put("training1_slide1", Image.createImage("/phases/training1/presentation/training1_slide1.png"));
+		    	images.put("training1_slide2", Image.createImage("/phases/training1/presentation/training1_slide2.png"));
+		    	images.put("training1_slide3", Image.createImage("/phases/training1/presentation/training1_slide3.png"));
+		    	
+		    	images.put("training2_slide1", Image.createImage("/phases/training2/presentation/training2_slide1.png"));
+		    	images.put("training2_slide2", Image.createImage("/phases/training2/presentation/training2_slide2.png"));
+		    	images.put("training2_slide3", Image.createImage("/phases/training2/presentation/training2_slide3.png"));
+		    	
+		    	images.put("training3_slide1", Image.createImage("/phases/training3/presentation/training3_slide1.png"));
+		    	images.put("training3_slide2", Image.createImage("/phases/training3/presentation/training3_slide2.png"));
+		    	
+		    	images.put("icaro_dedalos_slide1", Image.createImage("/phases/icaro_dedalos/presentation/icaro_dedalos_slide1.png"));
+		    	images.put("icaro_dedalos_slide2", Image.createImage("/phases/icaro_dedalos/presentation/icaro_dedalos_slide2.png"));
+		    	images.put("icaro_dedalos_slide3", Image.createImage("/phases/icaro_dedalos/presentation/icaro_dedalos_slide3.png"));
+		    	images.put("icaro_dedalos_slide4", Image.createImage("/phases/icaro_dedalos/presentation/icaro_dedalos_slide4.png"));
+		    	images.put("icaro_dedalos_slide5", Image.createImage("/phases/icaro_dedalos/presentation/icaro_dedalos_slide5.png"));
+		    	images.put("icaro_dedalos_slide6", Image.createImage("/phases/icaro_dedalos/presentation/icaro_dedalos_slide6.png"));
+				
+		    	images.put("teseo_slide1", Image.createImage("/phases/teseo/presentation/teseo_slide1.png"));
+		    	images.put("teseo_slide2", Image.createImage("/phases/teseo/presentation/teseo_slide2.png"));
+		    	images.put("teseo_slide3", Image.createImage("/phases/teseo/presentation/teseo_slide3.png"));
+		    	images.put("teseo_slide4", Image.createImage("/phases/teseo/presentation/teseo_slide4.png"));
+		    	images.put("teseo_slide5", Image.createImage("/phases/teseo/presentation/teseo_slide5.png"));
+		    	images.put("teseo_slide6", Image.createImage("/phases/teseo/presentation/teseo_slide6.png"));
+		    	images.put("teseo_slide7", Image.createImage("/phases/teseo/presentation/teseo_slide7.png"));
 		    	
 			}
 		    catch (Exception ioe) {
@@ -411,21 +533,33 @@ public class ResourcesHandler{
 			// Sonidos
 		    sounds = new Hashtable();
 		    
-		    
 		    // Fases
 		    phases = new Hashtable();
+		    Phase p = null;
 		    
-			Phase p1 = new Phase();
-			p1.setId("icaro_dedalos");
-			phases.put("icaro_dedalos", p1);
+		    p = new Phase();
+			p.setId("training1");
+			phases.put("training1", p);
 			
-			Phase p2 = new Phase();
-			p2.setId("teseo");
-			phases.put("teseo", p2);
+			p = new Phase();
+			p.setId("training2");
+			phases.put("training2", p);
+			
+			p = new Phase();
+			p.setId("training3");
+			phases.put("training3", p);
+			
+			p = new Phase();
+			p.setId("icaro_dedalos");
+			phases.put("icaro_dedalos", p);
+						
+			p = new Phase();
+			p.setId("teseo");
+			phases.put("teseo", p);
+			
+			
+			// Pruebas del xml parser
 		}
-		
-		// Devolvemos el resultado.
-		return result;
 	}
 	
 	// Obtiene un texto.
@@ -496,10 +630,10 @@ public class ResourcesHandler{
 		Phase s = (Phase) phases.get(id);
 		
 		if(s==null) {
-			System.err.println( "Stage \"" + id + "\" not found.");
+			System.err.println( "Phase \"" + id + "\" not found.");
 			System.exit(-1);
 		}
-		
+
 		return s.clone();
 	}
 	
@@ -508,35 +642,200 @@ public class ResourcesHandler{
 		this.languaje = languaje;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 	// Devuelve las pantallas de una fase.
 	public ArrayList getStages(String id) {
 		ArrayList stages = new ArrayList();
+		Stage s = null;
 		
-		if(id=="icaro_dedalos") {
-			Stage p1s1 = new Stage();
-			p1s1.setId("s1pantalla1");
-			stages.add(p1s1);
+		if(id.equals("training1")) {
 			
-			Stage p1s2 = new Stage();
-			p1s2.setId("s1pantalla2");
-			stages.add(p1s2);
+			s = new Stage();
+			s.setId("training1");
+			stages.add(s);
+			
+		} else if(id.equals("training2")) {
+			
+			s = new Stage();
+			s.setId("training2");
+			stages.add(s);
+			
+		} else if(id.equals("training3")) {
+			
+			s = new Stage();
+			s.setId("training3");
+			stages.add(s);
+			
+		} else if(id.equals("icaro_dedalos")) {
+			
+			s = new Stage();
+			s.setId("icaro_dedalos1");
+			stages.add(s);
+			
+			s = new Stage();
+			s.setId("icaro_dedalos2");
+			stages.add(s);
+			
+			s = new Stage();
+			s.setId("icaro_dedalos3");
+			stages.add(s);
+			
+			s = new Stage();
+			s.setId("icaro_dedalos4");
+			stages.add(s);
+			
+			s = new Stage();
+			s.setId("icaro_dedalos5");
+			stages.add(s);
+			
+			s = new Stage();
+			s.setId("icaro_dedalos6");
+			stages.add(s);
+			
+			s = new Stage();
+			s.setId("icaro_dedalos7");
+			stages.add(s);
+			
+			s = new Stage();
+			s.setId("icaro_dedalos8");
+			stages.add(s);
+			
+			s = new Stage();
+			s.setId("icaro_dedalos9");
+			stages.add(s);
+			
+		} else if(id.equals("teseo")) {
+			
+			s = new Stage();
+			s.setId("teseo1");
+			stages.add(s);
 			
 		} else {
-			Stage p2s1 = new Stage();
-			p2s1.setId("s2pantalla1");
-			stages.add(p2s1);
-			
-			Stage p2s2 = new Stage();
-			p2s2.setId("s2pantalla2");
-			stages.add(p2s2);
+			System.err.println( "Stage \"" + id + "\" not found.");
+			System.exit(-1);
 		}
 		return stages;
 	}
+
+	// getStage
+	
+	// Devuelve la presentación.
+	public ArrayList getSlides(String id) {
+		ArrayList slides = new ArrayList();
+		Slide s = null;
+		
+
+		if(id.equals("training1")) {
+			s = new Slide();
+			s.setImage("training1_slide1");
+			s.setText("training1_text1");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("training1_slide2");
+			s.setText("training1_text2");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("training1_slide3");
+			s.setText("training1_text3");
+			slides.add(s);
+		} else if(id.equals("training2")) {
+			s = new Slide();
+			s.setImage("training2_slide1");
+			s.setText("training2_text1");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("training2_slide2");
+			s.setText("training2_text2");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("training2_slide3");
+			s.setText("training2_text3");
+			slides.add(s);
+		} else if(id.equals("training3")) {
+			s = new Slide();
+			s.setImage("training3_slide1");
+			s.setText("training3_text1");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("training3_slide2");
+			s.setText("training3_text2");
+			slides.add(s);
+		} else if(id.equals("icaro_dedalos")) {
+			s = new Slide();
+			s.setImage("icaro_dedalos_slide1");
+			s.setText("icaro_dedalos_text1");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("icaro_dedalos_slide2");
+			s.setText("icaro_dedalos_text2");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("icaro_dedalos_slide3");
+			s.setText("icaro_dedalos_text3");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("icaro_dedalos_slide4");
+			s.setText("icaro_dedalos_text4");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("icaro_dedalos_slide5");
+			s.setText("icaro_dedalos_text5");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("icaro_dedalos_slide6");
+			s.setText("icaro_dedalos_text6");
+			slides.add(s);
+		} else if(id.equals("teseo")) {
+			s = new Slide();
+			s.setImage("teseo_slide1");
+			s.setText("teseo_text1");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("teseo_slide2");
+			s.setText("teseo_text2");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("teseo_slide3");
+			s.setText("teseo_text3");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("teseo_slide4");
+			s.setText("teseo_text4");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("teseo_slide5");
+			s.setText("teseo_text5");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("teseo_slide6");
+			s.setText("teseo_text6");
+			slides.add(s);
+			
+			s = new Slide();
+			s.setImage("teseo_slide7");
+			s.setText("teseo_text7");
+			slides.add(s);
+			
+		} else {
+			System.err.println( "Slides \"" + id + "\" not found.");
+			System.exit(-1);
+		}
+		return slides;
+	}
+	
+	
 }

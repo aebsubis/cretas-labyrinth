@@ -86,7 +86,10 @@ public class GameHandler{
 		phases = new ArrayList();
 		
 		// Añadimos las fases.
-		phases.add(ResourcesHandler.getInstance().getPhase("icaro_dedalos"));
+		//phases.add(ResourcesHandler.getInstance().getPhase("training1"));
+		//phases.add(ResourcesHandler.getInstance().getPhase("training2"));
+		//phases.add(ResourcesHandler.getInstance().getPhase("training3"));
+		//phases.add(ResourcesHandler.getInstance().getPhase("icaro_dedalos"));
 		phases.add(ResourcesHandler.getInstance().getPhase("teseo"));
 		
 		// Establecemos la fase 0 como actual.
@@ -94,6 +97,7 @@ public class GameHandler{
 
 		// Inicializamos la fase.
 		Phase phase = (Phase) phases.get(currentPhase);
+
 		phase.init();
 		
 		Debugger.debug.print("GameHandler", "Init", "Ends");

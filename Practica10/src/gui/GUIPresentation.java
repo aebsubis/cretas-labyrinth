@@ -8,6 +8,7 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
 
+import utils.ArrayList;
 import utils.Debugger;
 import utils.ResourcesHandler;
 
@@ -48,8 +49,23 @@ public class GUIPresentation extends Canvas implements CommandListener{
 	   	graphics.drawImage(ResourcesHandler.getInstance().getImage(image), 0, 0, Graphics.LEFT | Graphics.TOP);	
 	   	
 		// Dibujamos el texto de la diapositiva.
-	   	graphics.drawString(ResourcesHandler.getInstance().getText(text), getWidth()/2, getHeight()/2, Graphics.BASELINE | Graphics.HCENTER);
-
+	   	String completeText = ResourcesHandler.getInstance().getText(text);
+	   	ArrayList lines = new ArrayList();
+	   	String currentLine = "";
+	   	for(int i=0; i<completeText.length(); i++) {
+	   		if(completeText.charAt(i) == '\n') {
+	   			lines.add(currentLine);
+	   			currentLine = "";
+	   		} else {
+	   			currentLine += completeText.charAt(i);
+	   		}
+	   	}
+	   	lines.add(currentLine);
+	   	
+	   	for(int i=0; i<lines.size(); i++) {
+	   		graphics.drawString((String)lines.get(i), getWidth()/2, getHeight()-(20*(lines.size()-i)), Graphics.BASELINE | Graphics.HCENTER);
+	   	}
+	   	
 	   	Debugger.debug.print("GuiPresentation", "paint", "Ends");
 	}
 	

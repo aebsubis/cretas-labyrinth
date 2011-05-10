@@ -4,6 +4,7 @@ import gui.GUIHandler;
 import gui.GUIScreens;
 import utils.ArrayList;
 import utils.Debugger;
+import utils.ResourcesHandler;
 
 /**
  * 
@@ -15,6 +16,9 @@ public class Presentation {
 	// Identificador del recurso sonoro.
 	//private String music;
 	
+	// Identificador de la presentaión.
+	private String id;
+	
 	// ArrayList de diapositivas
 	private ArrayList slides;
 	
@@ -25,8 +29,8 @@ public class Presentation {
 	private boolean completed;
 	
 	// Constructor por defecto.
-	public Presentation() {
-		
+	public Presentation(String id) {
+		this.id = id;
 	}
 
 	public void init() {
@@ -40,17 +44,9 @@ public class Presentation {
 		// Inicializamos las diapositivas.
 		slides = new ArrayList();
 		
-		// Añadimos dos diapositivas (debe hacerse desde resources handler).
-		Slide slide1 = new Slide();
-		slide1.setImage("slide_1");
-		slide1.setText("slide_1");
-		slides.add(slide1);
-		
-		Slide slide2 = new Slide();
-		slide2.setImage("slide_2");
-		slide2.setText("slide_2");
-		slides.add(slide2);
-		
+		//Obtenemos las diapositivas.
+		slides = ResourcesHandler.getInstance().getSlides(id);
+				
 		// Establecemos como actual la primera diapositiva.
 		currentSlide = 0;
 		
