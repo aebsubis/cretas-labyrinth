@@ -78,5 +78,4 @@ public class GUIPresentation extends Canvas implements CommandListener{
 	public void setText(String text) {
 		this.text = text;
 	}
-
 }

@@ -36,6 +36,9 @@ public class Element extends GameObject{
 	// Indica si el elemento es enemigo.
 	private boolean isEnemy;
 	
+	// Último instante en que fue golpeado.
+	private long lastHitTime;
+
 	// Constructor por defecto.
 	public Element() {
 		
@@ -52,13 +55,14 @@ public class Element extends GameObject{
 		this.isUsable = false;
 		this.isPassable = false;
 		this.isEnemy = false;
+		this.lastHitTime = 0;
 	}
 	
 	// Constructor sobrecargado.
-	public Element(double id, Location2D location, int lives, int speed, int stamina, boolean movable, boolean portable, boolean usable, boolean passable, boolean enemy) {
+	public Element(double id, Location2D location, String AIType, String GFXType, int depth, int lives, int speed, int stamina, boolean movable, boolean portable, boolean usable, boolean passable, boolean enemy) {
 
 		// Llamamos al constructor de la clase padre.
-		super(id, location);
+		super(id, location, AIType, GFXType, depth);
 		
 		// Establecemos los atributos.
 		this.lives = lives;
@@ -70,6 +74,7 @@ public class Element extends GameObject{
 		this.isUsable = usable;
 		this.isPassable = passable;
 		this.isEnemy = enemy;
+		this.lastHitTime = 0;
 	}
 
 	// Obtiene las vidas restantes.
@@ -160,5 +165,15 @@ public class Element extends GameObject{
 	// Establece si el objeto es enemigo.
 	public void setEnemy(boolean enemy) {
 		isEnemy = enemy;
+	}
+
+	// Devuelve el último momento en que fue golpeado.
+	public long getLastHitTime() {
+		return lastHitTime;
+	}
+	
+	// Establece el último momento en que fue golpeado.
+	public void setLastHitTime(long time) {
+		lastHitTime = time;
 	}
 }

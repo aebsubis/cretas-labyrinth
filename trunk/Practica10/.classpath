@@ -2,8 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="res"/>
+	<classpathentry kind="src" path="lib"/>
 	<classpathentry kind="con" path="J2MELIB"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/Daniel/Mis documentos/university/ESO/Prácticas/Práctica 9/kxml.jar"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/Daniel/Mis documentos/university/ESO/Prácticas/Práctica 9/kxml2-2.3.0.jar"/>
+	<classpathentry kind="lib" path="lib/kxml2-2.3.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

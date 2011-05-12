@@ -35,20 +35,12 @@ public class Presentation {
 
 	public void init() {
 		Debugger.debug.print("Presentation", "Init", "Starts");
+		
 		// Presentación no completada.
 		completed = false;
 		
-		// Identificamos el recurso sonoro.
-		//music = "soundtest";
-		
-		// Inicializamos las diapositivas.
-		slides = new ArrayList();
-		
-		//Obtenemos las diapositivas.
-		slides = ResourcesHandler.getInstance().getSlides(id);
-				
-		// Establecemos como actual la primera diapositiva.
-		currentSlide = 0;
+		// Cargamos la información de la presentación.
+		ResourcesHandler.getInstance().loadPresentation(this);
 		
 		// Arrancamos el sonido.
 		//ResourcesHandler.getInstance().playSound("");
@@ -102,6 +94,31 @@ public class Presentation {
 	// Indica si se ha completado la presentación.
 	public boolean isCompleted() {
 		return completed;
+	}
+
+	// Devuelve el id de la presentación.
+	public String getId() {
+		return id;
+	}
+
+	// Obtiene las diapositivas de la presentación.
+	public ArrayList getSlides() {
+		return slides;
+	}
+	
+	// Establece las diapositivas de la presentación.
+	public void setSlides(ArrayList slides) {
+		this.slides = slides;
+	}
+
+	// Obtiene la diapositiva actual.
+	public int getCurrentSlide(){
+		return currentSlide;
+	}
+	
+	// Establece la diapositiva actual.
+	public void setCurrentSlide(int currentSlide) {
+		this.currentSlide = currentSlide;		
 	}
 }
 

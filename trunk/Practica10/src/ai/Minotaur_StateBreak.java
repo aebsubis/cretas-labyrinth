@@ -1,6 +1,9 @@
 package ai;
 
+import game.Element;
+import game.GameHandler;
 import gui.GUIHandler;
+import utils.Location2D;
 import utils.ResourcesHandler;
 
 public class Minotaur_StateBreak extends State{
@@ -37,6 +40,22 @@ public class Minotaur_StateBreak extends State{
 	
 	// Acciones a ejecutar mientras se permanece en el estado.
 	public void execute(AIObject o) {
+		
+		// Objeto jugador.
+		Element player = GameHandler.getInstance().getCurrentPhase().getCurrentStage().getPlayer();
+
+		// Posición del jugador.
+		Location2D playerLocation = player.getLocation();
+		
+		// Posición del enemigo.
+		Location2D pActLoc = o.element.getLocation();
+		
+		// Comprobamos si están en la misma posición.
+		if(playerLocation.equals(pActLoc)) {
+			
+			// Dañamos al personaje.
+			AIHandler.getInstance().sendMessage(0, o.getId(), player.getId(), Message.recivedImpact);
+		}
 		
 		// Comprobamos si ha pasado el tiempo suficiente.
 		if(System.currentTimeMillis()-startTime >= breakTime) {

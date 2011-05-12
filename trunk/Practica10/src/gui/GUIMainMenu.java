@@ -23,10 +23,20 @@ public class GUIMainMenu extends Canvas implements Runnable, CommandListener{
 	private int optionFocus;
 	
 	// indica si se ha seleccionado una opción.
-	private boolean optionSelected=false;
+	private boolean optionSelected;
+	
+	// Hilo para la ejecución.
+	Thread t;
 	
 	// Constructor por defecto.
-	public GUIMainMenu() {	      
+	public GUIMainMenu() {	  
+		
+		// No se ha seleccionado ninguna opción.
+		optionSelected = false;
+		
+		// No se ha inicializado el hilo.
+		t = null;
+		
 		select = new Command(ResourcesHandler.getInstance().getText("select"), Command.OK, 0);
 		back = new Command(ResourcesHandler.getInstance().getText("back"), Command.BACK, 1);
 		addCommand(select);
@@ -42,19 +52,21 @@ public class GUIMainMenu extends Canvas implements Runnable, CommandListener{
 
 	public void commandAction(Command command, Displayable diplayable) {
 		if (command == select) {
-			optionSelected = true;
+			
 			switch(optionFocus) {
 			case 0:
 				// Nuevo juego.
+				optionSelected = true;
 				GUIHandler.getInstance().newGame();
 				break;
 			case 1:
 				// Continuar juego.
-				GUIHandler.getInstance().continueGame();
+				optionSelected = true;
+				GUIHandler.getInstance().resumeGame2();
 				break;
 			case 2:
 				// Puntuaciones.
-				GUIHandler.getInstance().showScreen(GUIScreens.SCORES);
+				//GUIHandler.getInstance().showScreen(GUIScreens.SCORES);
 				break;
 			case 3:
 				// Opciones.
@@ -62,7 +74,7 @@ public class GUIMainMenu extends Canvas implements Runnable, CommandListener{
 				break;
 			}
 		}
-			GUIHandler.getInstance().showScreen(GUIScreens.MAINMENU);
+		
 		if (command == back)
 			GUIHandler.getInstance().showScreen(GUIScreens.STARTSCREEN);
 	}
@@ -136,14 +148,21 @@ public class GUIMainMenu extends Canvas implements Runnable, CommandListener{
 
 	// Inicia el render.
 	public void start() {
+		if(t!=null)
+			if(t.isAlive())
+				t.interrupt();
+		
 		// Creamos un nuevo hilo de ejecución.
-		Thread t = new Thread(this);
+		t = new Thread(this);
 	    t.start();
 	}
 	
 	// Detiene el render.
 	public void stop() {
 		optionSelected = true;
+		if(t!=null)
+			if(t.isAlive())
+				t.interrupt();
 	}
 	
 	// Dibuja el menú hasta que se selecciona una opción.

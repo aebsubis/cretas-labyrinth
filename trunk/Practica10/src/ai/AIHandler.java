@@ -36,36 +36,32 @@ public class AIHandler {
 		IssuerEvent.getInstance().sendDelayedMessages();
 	}
 	
-	public void registerObject(int type, double id, Element e) {
-		AIObject o;
+	// Registra el objeto de la IA.
+	public void registerObject(double id, String type, Element e) {
+		AIObject o = null;
 		
-		/*switch(type) {
-		case AIObject.PLAYER:
+		if( type.equals(AIObject.PLAYER)) {
 			o = new AIPlayer(id, e);
-			break;
-		case AIObject.BUG:
-			o = new AIBug(id, e);
-			break;
-		case AIObject.SPIDER:
-			o = new AISpider(id, e);
-			break;
-		case AIObject.SNAKE:
-			o = new AISnake(id, e);
-			break;
-		case AIObject.MINOTAUR:
+		}
+		else if (type.equals(AIObject.BUG)) {
+			// 
+		}
+		else if (type.equals(AIObject.SPIDER)) {
+			// 
+		}
+		else if (type.equals(AIObject.SNAKE)) {
+			// 
+		}
+		else if (type.equals(AIObject.MINOTAUR)) {
 			o = new AIMinotaur(id, e);
-			break;
-		default:
-			System.out.println("AI type " + type + " does not exists.");
-			exit(-1);
-			break;
-		}*/
+		}
 		
-		if(type == AIObject.PLAYER)
-			o = new AIPlayer(id, e);
-		else
-			o = new AIMinotaur(id, e);
+		if (o == null) {
+			System.err.println("AIType " + type + " not found.");
+			System.exit(-1);
+		}
 		
+		// Guardamos el objeto IA.
 		EventManager.getInstance().registerObject(o);
 	}
 	

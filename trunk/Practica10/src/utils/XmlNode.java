@@ -43,4 +43,32 @@ public class XmlNode {
 	public void addChild(XmlNode child) {
 		this.children.addElement(child);
 	}
+	
+	public void dumpXML(int deep)
+	{
+		for(int i = 0; i < deep; i++)
+		{
+			System.out.print(" ");
+		}
+		System.out.print(this.nodeName + " - ");
+	 
+		if(this.nodeValue != null)
+		{
+			System.out.print("(" + this.nodeValue + ") - ");
+		}
+		String[] attributes = this.getAttributeNames();
+	 
+		for(int i = 0; i < attributes.length; i++)
+		{
+			System.out.print(attributes[i] + ": " + this.getAttribute(attributes[i]) + ", ");
+		}
+	 
+		System.out.println();
+	 
+		for(int i = 0; i < this.children.size(); i++)
+		{
+			XmlNode n = (XmlNode)this.children.elementAt(i);
+			n.dumpXML(deep + 1);
+		}
+	}
 }
