@@ -86,10 +86,12 @@ public class GameHandler{
 		phases = new ArrayList();
 		
 		// Añadimos las fases.
-		//phases.add(ResourcesHandler.getInstance().getPhase("training1"));
-		//phases.add(ResourcesHandler.getInstance().getPhase("training2"));
-		//phases.add(ResourcesHandler.getInstance().getPhase("training3"));
-		//phases.add(ResourcesHandler.getInstance().getPhase("icaro_dedalos"));
+		if(ResourcesHandler.getInstance().getTraining() == true) {
+			phases.add(ResourcesHandler.getInstance().getPhase("training1"));
+			phases.add(ResourcesHandler.getInstance().getPhase("training2"));
+			phases.add(ResourcesHandler.getInstance().getPhase("training3"));
+		}
+		phases.add(ResourcesHandler.getInstance().getPhase("icaro_dedalos"));
 		phases.add(ResourcesHandler.getInstance().getPhase("teseo"));
 		
 		// Establecemos la fase 0 como actual.
@@ -97,7 +99,6 @@ public class GameHandler{
 
 		// Inicializamos la fase.
 		Phase phase = (Phase) phases.get(currentPhase);
-
 		phase.init();
 		
 		Debugger.debug.print("GameHandler", "Init", "Ends");
@@ -106,25 +107,30 @@ public class GameHandler{
 	// Actualiza el estado del juego.
 	public void update() {
 		Debugger.debug.print("GameHandler", "update", "Starts");
+		
 		if(completed) {
+		
 			Debugger.debug.print("GameHandler", "update", "El juego está completado.");
+		
 		} else {
-			Debugger.debug.print("GameHandler", "update", "El juego no está completado.");
-			// Update events.
-			events();
-			Debugger.debug.print("GameHandler", "update", "events ended");
-			// Update AI.		
-			AIHandler.getInstance().update();
-			Debugger.debug.print("GameHandler", "update", "ai ended");
-			// Update Game.
+			
 			Phase phase = (Phase) phases.get(currentPhase);
-			phase.update();
-			Debugger.debug.print("GameHandler", "update", "phase updated");
 			// Comprobar si se ha completado la fase.
 			if(phase.isCompleted()) {
-				Debugger.debug.print("GameHandler", "update", "nextphase");
+
+				// Pasamos a la siguiente fase.
 				nextPhase();
-				Debugger.debug.print("GameHandler", "update", "nextphased");
+				
+			} else {
+				
+				// Update events.
+				events();
+
+				// Update AI.		
+				AIHandler.getInstance().update();
+				
+				// Update Game.
+				phase.update();
 			}
 		}
 		Debugger.debug.print("GameHandler", "update", "Ends");
@@ -325,7 +331,13 @@ public class GameHandler{
 		this.completed = completed;
 	}
 	
+	// Obtiene la fase actual.
 	public Phase getCurrentPhase() {
 		return (Phase) phases.get(currentPhase);
+	}
+
+	// Reactiva el juego.
+	public void resume() {
+		update();
 	}
 }

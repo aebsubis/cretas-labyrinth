@@ -4,11 +4,11 @@ import game.Element;
 
 public abstract class AIObject {
 
-	public static final int PLAYER = 0;
-	public static final int BUG = 1;
-	public static final int SPIDER = 2;
-	public static final int SNAKE = 3;
-	public static final int MINOTAUR = 4;
+	public static final String PLAYER = "player";
+	public static final String BUG = "bug";
+	public static final String SPIDER = "spider";
+	public static final String SNAKE = "snake";
+	public static final String MINOTAUR = "minotaur";
 	
 	// Maquina de estados.
 	protected StateMachine stateMachine;

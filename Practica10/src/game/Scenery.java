@@ -20,8 +20,8 @@ public class Scenery extends GameObject{
 	}
 	
 	// Constructor sobrecargado.
-	public Scenery(double id, Location2D location, boolean passable) {
-		super(id, location);
+	public Scenery(double id, Location2D location, String AIType, String GFXType, int depth, boolean passable) {
+		super(id, location, AIType, GFXType, depth);
 		
 		this.isPassable = passable;
 	}

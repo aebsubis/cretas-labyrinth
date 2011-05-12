@@ -1,11 +1,26 @@
 package utils;
 
+import game.Element;
+import game.GameHandler;
 import game.Phase;
+import game.Presentation;
+import game.Scenery;
 import game.Slide;
 import game.Stage;
+
+import java.io.InputStreamReader;
 import java.util.Hashtable;
 
 import javax.microedition.lcdui.Image;
+
+import maps.Map;
+import maps.MapElement;
+import maps.MapTraining1;
+import maps.MapTraining2;
+import maps.MapTraining3;
+
+import org.kxml2.io.KXmlParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * El Manejador de recursos es el encargado de gestionar todos los recursos externos
@@ -27,6 +42,9 @@ public class ResourcesHandler{
 	
 	// Indica el lenguaje seleccionado.
 	private int languaje;
+	
+	// Indica si se debe realizar el entrenamiento.
+	private boolean training;
 	
 	// Textos.
 	private Hashtable textos;
@@ -69,6 +87,9 @@ public class ResourcesHandler{
 			// Lenguaje por defecto.
 			languaje = CASTELLANO;
 			
+			// Entrenamiento por defecto.
+			training = true;
+			
 			// Textos genéricos
 			textos = new Hashtable();
 			texts = new Hashtable();
@@ -78,6 +99,9 @@ public class ResourcesHandler{
 			
 			textos.put("exit", "Salir");
 			texts.put("exit", "Exit");
+			
+			textos.put("retry", "Reintentar");
+			texts.put("retry", "Retry");
 			
 			textos.put("select", "Seleccionar");
 			texts.put("select", "select");
@@ -113,14 +137,14 @@ public class ResourcesHandler{
 			textos.put("phase_training2_name", "Entrenamiento 2");
 			texts.put("phase_training2_name", "Training 2");
 			
-			textos.put("phase_training1_name", "Entrenamiento 2");
-			texts.put("phase_training1_name", "Training 2");
+			textos.put("phase_training3_name", "Entrenamiento 3");
+			texts.put("phase_training3_name", "Training 3");
 			
 			textos.put("phase_icaro_dedalos_name", "La leyenda de Ícaro y Dédalos");
 			texts.put("phase_icaro_dedalos_name", "The legend of Icarus and Daedalus");
 			
-			textos.put("phase_icaro_dedalos_name", "La leyenda de Teseo");
-			texts.put("phase_icaro_dedalos_name", "The legend of Theseus");
+			textos.put("phase_teseo_name", "La leyenda de Teseo");
+			texts.put("phase_teseo_name", "The legend of Theseus");
 
 			// Nombres de pantallas.
 			textos.put("stage_training1_name", "Entrenamiento 1");
@@ -129,38 +153,38 @@ public class ResourcesHandler{
 			textos.put("stage_training2_name", "Entrenamiento 2");
 			texts.put("stage_training2_name", "Training 2");
 			
-			textos.put("stage_training3_name", "Entrenamiento 31");
+			textos.put("stage_training3_name", "Entrenamiento 3");
 			texts.put("stage_training3_name", "Training 3");
 			
-			textos.put("phase_icaro_dedalos1_name", "Encerrados");
-			texts.put("phase_icaro_dedalos1_name", "Locked");
+			textos.put("stage_icaro_dedalos1_name", "Encerrados");
+			texts.put("stage_icaro_dedalos1_name", "Locked");
 			
-			textos.put("phase_icaro_dedalos2_name", "Encuentra a tu padre");
-			texts.put("phase_icaro_dedalos2_name", "Find your father");
+			textos.put("stage_icaro_dedalos2_name", "Encuentra a tu padre");
+			texts.put("stage_icaro_dedalos2_name", "Find your father");
 			
-			textos.put("phase_icaro_dedalos3_name", "Construye tu libertad");
-			texts.put("phase_icaro_dedalos3_name", "Build your freedom");
+			textos.put("stage_icaro_dedalos3_name", "Construye tu libertad");
+			texts.put("stage_icaro_dedalos3_name", "Build your freedom");
 			
-			textos.put("phase_icaro_dedalos4_name", "Busqueda de materiales I");
-			texts.put("phase_icaro_dedalos4_name", "Search for materials I");
+			textos.put("stage_icaro_dedalos4_name", "Busqueda de materiales I");
+			texts.put("stage_icaro_dedalos4_name", "Search for materials I");
 			
-			textos.put("phase_icaro_dedalos5_name", "Busqueda de materiales II");
-			texts.put("phase_icaro_dedalos5_name", "Search for materials II");
+			textos.put("stage_icaro_dedalos5_name", "Busqueda de materiales II");
+			texts.put("stage_icaro_dedalos5_name", "Search for materials II");
 			
-			textos.put("phase_icaro_dedalos6_name", "Busqueda de materiales III");
-			texts.put("phase_icaro_dedalos6_name", "Search for materials III");
+			textos.put("stage_icaro_dedalos6_name", "Busqueda de materiales III");
+			texts.put("stage_icaro_dedalos6_name", "Search for materials III");
 			
-			textos.put("phase_icaro_dedalos7_name", "Busqueda de materiales IV");
-			texts.put("phase_icaro_dedalos7_name", "Search for materials IV");
+			textos.put("stage_icaro_dedalos7_name", "Busqueda de materiales IV");
+			texts.put("stage_icaro_dedalos7_name", "Search for materials IV");
 			
-			textos.put("phase_icaro_dedalos8_name", "Cuidado con el Minotauro");
-			texts.put("phase_icaro_dedalos8_name", "Beware of Minotaur");
+			textos.put("stage_icaro_dedalos8_name", "Cuidado con el Minotauro");
+			texts.put("stage_icaro_dedalos8_name", "Beware of Minotaur");
 			
-			textos.put("phase_icaro_dedalos9_name", "Vuela lejos");
-			texts.put("phase_icaro_dedalos9_name", "Fly away");
+			textos.put("stage_icaro_dedalos9_name", "Vuela lejos");
+			texts.put("stage_icaro_dedalos9_name", "Fly away");
 			
-			textos.put("phase_teseo1_name", "Proximamente");
-			texts.put("phase_teseo1_name", "Comming soon");
+			textos.put("stage_teseo1_name", "Proximamente");
+			texts.put("stage_teseo1_name", "Comming soon");
 			
 			// Textos de diapositivas.
 			textos.put("slide_1", "Diapositiva 1");
@@ -230,6 +254,8 @@ public class ResourcesHandler{
 		    	images.put("menu_scores_focus", Image.createImage("/interface/scoresFocus.png"));
 		    	images.put("menu_settings", Image.createImage("/interface/settings.png"));
 		    	images.put("menu_settings_focus", Image.createImage("/interface/settingsFocus.png"));
+		    	images.put("victory", Image.createImage("/interface/victory.png"));
+		    	images.put("defeat", Image.createImage("/interface/defeat.png"));
 
 		    	images.put("live_off", Image.createImage("/interface/liveOff.png"));
 		    	images.put("live_half", Image.createImage("/interface/liveHalf.png"));
@@ -556,9 +582,6 @@ public class ResourcesHandler{
 			p = new Phase();
 			p.setId("teseo");
 			phases.put("teseo", p);
-			
-			
-			// Pruebas del xml parser
 		}
 	}
 	
@@ -637,36 +660,37 @@ public class ResourcesHandler{
 		return s.clone();
 	}
 	
-	// Establece el idioma.
-	public void setLanguaje(int languaje) {
-		this.languaje = languaje;
-	}
-	
 	// Devuelve las pantallas de una fase.
 	public ArrayList getStages(String id) {
+		
+		// Array list de pantallas.
 		ArrayList stages = new ArrayList();
 		Stage s = null;
 		
 		if(id.equals("training1")) {
 			
+			// Pantallas de la fase "training1"
 			s = new Stage();
 			s.setId("training1");
 			stages.add(s);
 			
 		} else if(id.equals("training2")) {
 			
+			// Pantallas de la fase "training2"
 			s = new Stage();
 			s.setId("training2");
 			stages.add(s);
 			
 		} else if(id.equals("training3")) {
 			
+			// Pantallas de la fase "training3"
 			s = new Stage();
 			s.setId("training3");
 			stages.add(s);
 			
 		} else if(id.equals("icaro_dedalos")) {
 			
+			// Pantallas de la fase "icaro_dedalos"
 			s = new Stage();
 			s.setId("icaro_dedalos1");
 			stages.add(s);
@@ -705,6 +729,7 @@ public class ResourcesHandler{
 			
 		} else if(id.equals("teseo")) {
 			
+			// Pantallas de la fase "teseo"
 			s = new Stage();
 			s.setId("teseo1");
 			stages.add(s);
@@ -715,16 +740,17 @@ public class ResourcesHandler{
 		}
 		return stages;
 	}
-
-	// getStage
 	
-	// Devuelve la presentación.
+	// Devuelve la presentación de la fase.
 	public ArrayList getSlides(String id) {
+		
+		// Array list de diapositivas.
 		ArrayList slides = new ArrayList();
 		Slide s = null;
 		
-
 		if(id.equals("training1")) {
+			
+			// Diapositivas de la fase "training1"
 			s = new Slide();
 			s.setImage("training1_slide1");
 			s.setText("training1_text1");
@@ -739,7 +765,10 @@ public class ResourcesHandler{
 			s.setImage("training1_slide3");
 			s.setText("training1_text3");
 			slides.add(s);
+			
 		} else if(id.equals("training2")) {
+			
+			// Diapositivas de la fase "training2"
 			s = new Slide();
 			s.setImage("training2_slide1");
 			s.setText("training2_text1");
@@ -754,7 +783,10 @@ public class ResourcesHandler{
 			s.setImage("training2_slide3");
 			s.setText("training2_text3");
 			slides.add(s);
+			
 		} else if(id.equals("training3")) {
+			
+			// Diapositivas de la fase "training3"
 			s = new Slide();
 			s.setImage("training3_slide1");
 			s.setText("training3_text1");
@@ -764,7 +796,10 @@ public class ResourcesHandler{
 			s.setImage("training3_slide2");
 			s.setText("training3_text2");
 			slides.add(s);
+			
 		} else if(id.equals("icaro_dedalos")) {
+			
+			// Diapositivas de la fase "icaro_dedalos"
 			s = new Slide();
 			s.setImage("icaro_dedalos_slide1");
 			s.setText("icaro_dedalos_text1");
@@ -794,7 +829,10 @@ public class ResourcesHandler{
 			s.setImage("icaro_dedalos_slide6");
 			s.setText("icaro_dedalos_text6");
 			slides.add(s);
+			
 		} else if(id.equals("teseo")) {
+			
+			// Diapositivas de la fase "teseo"
 			s = new Slide();
 			s.setImage("teseo_slide1");
 			s.setText("teseo_text1");
@@ -836,6 +874,214 @@ public class ResourcesHandler{
 		}
 		return slides;
 	}
+
+	// Carga la información de una fase.
+	public void loadPhase(Phase phase) {
+		
+		// Obtenemos el nombre de la fase.
+		phase.setName(getText("phase_" + phase.getId() + "_name"));
+		
+		// Establecemos la primera pantalla como actual.
+		phase.setCurrentStage(0);
+		
+		// Obtenemos las pantallas.
+		phase.setStages(ResourcesHandler.getInstance().getStages(phase.getId()));
+		
+		// Obtenemos la presentación.
+		phase.setPresentation(new Presentation(phase.getId()));
+	}
+
+	// Carga la información de una presentación.
+	public void loadPresentation(Presentation presentation) {
+		
+		// Identificamos el recurso sonoro.
+		//presentation.setMusic(ResourcesHandler.getInstance().getMusic(presentation.getId()));
+		
+		//Obtenemos las diapositivas.
+		presentation.setSlides(ResourcesHandler.getInstance().getSlides(presentation.getId()));
+				
+		// Establecemos como actual la primera diapositiva.
+		presentation.setCurrentSlide(0);
+	}
+
+	// Carga la información de una pantalla.
+	public void loadStage(Stage stage){
+		
+		/*
+		InputStreamReader reader =  null;
+		KXmlParser parser = null;
+		XmlParser gParser = null;
+		XmlNode xml = null;
+		
+		reader = new InputStreamReader(getClass().getResourceAsStream("/phases/training1/stages/training1.xml"));
+
+		parser = new KXmlParser();
+		gParser = new XmlParser();
+		
+		try {
+			parser.setInput(reader);
+		} catch (Exception e) {
+			System.err.println("Error al establecer el input.");
+			e.printStackTrace();
+		}
+
+		try {
+			xml = gParser.parseXML(parser, true);
+		} catch (Exception e) {
+			System.err.println("Error al obtener el XML.");
+			e.printStackTrace();
+		}
+		*/
+		Map loadingMap = null;
+		if(stage.getId().equals("training1")) {
+			loadingMap = new MapTraining1();
+		} else if(stage.getId().equals("training2")) {
+			loadingMap = new MapTraining2();
+		} else if(stage.getId().equals("training3")) {
+			loadingMap = new MapTraining3();
+		} else {
+			System.err.println( "Stage \"" + stage.getId() + "\" not found.");
+			System.exit(-1);
+		}
+		
+		
+		// Nombre de la pantalla.
+		stage.setName(getText("stage_" + stage.getId() + "_name"));
+		
+		// Leemos el tamaño de la pantalla.
+		int width = loadingMap.getWidth();
+		int height = loadingMap.getHeight();
+		
+		// Guardamos el tamaño de la pantalla.
+		stage.setWidth(width);
+		stage.setHeight(height);
+		
+		// Inicializamos el escenario.
+		Scenery[][] scenery = new Scenery[stage.getWidth()][stage.getHeight()];
+		
+		for (int i = 0; i < width; i++) {
+			for (int j = 0; j < height; j++) {
+				
+				// Obtenemos el identificador del objeto.
+				double objectId = GameHandler.getInstance().getIdentifier();
+				
+				// Obtenemos el elemento a ser cargado.
+				MapElement mapElement = loadingMap.getSceneryElement(i, j);
+				
+				// Leemos los parámetros.
+				int elementXLocation = mapElement.getElementXLocation();
+				int elementYLocation = mapElement.getElementYLocation();
+				String elementAIType = mapElement.getElementAIType();
+				String elementGFXType = mapElement.getElementGFXType();
+				int elementDepth = mapElement.getElementDepth();
+				boolean elementPasable = mapElement.isElementPasable();
+				
+				// Creamos el objeto lógico.
+				scenery[i][j] = new Scenery(objectId, new Location2D(elementXLocation, elementYLocation) , elementAIType, elementGFXType, elementDepth, elementPasable);
+			}
+		}
+		
+		// Guardamos el escenario en la pantalla.
+		stage.setScenery(scenery);
+		
+		
+		// Inicializamos la niebla.
+		Scenery[][] visitedArea = new Scenery [stage.getWidth()][stage.getHeight()];
+
+		boolean activateFog = loadingMap.isFog();
+		
+		for (int i = 0; i < stage.getWidth(); i++) {
+			for (int j = 0; j < stage.getHeight(); j++) {
+				if(activateFog == true) {
+				
+					// Obtenemos un identificador único para el nuevo objeto.
+					double objectId = GameHandler.getInstance().getIdentifier();
 	
+					// Creamos el objeto lógico.
+					visitedArea[i][j] = new Scenery(objectId, new Location2D(i, j) , "none", "fog", 4, true);
+				
+				} else {
+					
+					visitedArea[i][j] = null;
+					
+				}
+			}
+		}
+		
+		// Guardamos la niebla en la pantalla.
+		stage.setVisitedArea(visitedArea);
+		
+		
+		// Inicializamos los elemetos.
+		ArrayList elements = new ArrayList();
+		
+		// Para cada enemigo en la pantalla.
+		for(int i = 0; i < loadingMap.getElements().size(); i++) {
+			
+			// Obtenemos un identificador único para el nuevo objeto.
+			double elementId = GameHandler.getInstance().getIdentifier();
+			
+			// Obtenemos el elemento a ser cargado.
+			MapElement mapElement = (MapElement)loadingMap.getElements().get(i);
+			
+			// Leemos los parámetros.
+			int elementXLocation = mapElement.getElementXLocation();
+			int elementYLocation = mapElement.getElementYLocation();
+			String elementAIType = mapElement.getElementAIType();
+			String elementGFXType = mapElement.getElementGFXType();
+			int elementDepth = mapElement.getElementDepth();
+			int elementLives = mapElement.getElementLives();
+			int elementSpeed = mapElement.getElementSpeed();
+			int elementStamina = mapElement.getElementStamina();
+			boolean elementMovable = mapElement.isElementMovable();
+			boolean elementPortable = mapElement.isElementPortable();
+			boolean elementUsable = mapElement.isElementUsable();
+			boolean elementPasable = mapElement.isElementPasable();
+			boolean elementEnemy = mapElement.isElementEnemy();
+			
+			// Creamos el elemento.
+			elements.add(new Element(elementId, new Location2D(elementXLocation, elementYLocation), elementAIType, elementGFXType, elementDepth, elementLives, elementSpeed, elementStamina, elementMovable, elementPortable, elementUsable, elementPasable, elementEnemy));
+		}
+			
+		// Guardamos los elementos en la pantalla.
+		stage.setElements(elements);
+
+		// Obtenemos la posición inicial del nivel.
+		int startLevelLocationX = loadingMap.getStartLocationX();
+		int startLevelLocationY = loadingMap.getStartLocationY();
+		
+		// Start location
+		stage.setStartLocation(new Location2D(startLevelLocationX, startLevelLocationY));
+		
+		// Obtenemos la posición final del nivel.
+		int endLevelLocationX = 0;
+		int endLevelLocationY = 0;
+		
+		// End location
+		stage.setEndLocation(new Location2D(endLevelLocationX, endLevelLocationY));
+		
+		// Obtenemos un identificador único para el jugador.
+		double playerId = GameHandler.getInstance().getIdentifier();
+		
+		// Cargamos el jugador.
+		Element player = new Element(playerId, new Location2D(stage.getStartLocation().getX(), stage.getStartLocation().getY()), "player", "player_icaro_stand_front", 2, 10, 2, 100, true, false, false, false, false);
+
+		// Guardamos el jugador.
+		stage.setPlayer(player);
+	}
 	
+	// Establece el idioma.
+	public void setLanguaje(int languaje) {
+		this.languaje = languaje;
+	}
+	
+	// Establece si se debe reealizar el entrenamiento.
+	public void setTraining(boolean training) {
+		this.training = training;
+	}
+	
+	// Indica si se debe realizar el entrenamiento.
+	public boolean getTraining() {
+		return training;
+	}
 }

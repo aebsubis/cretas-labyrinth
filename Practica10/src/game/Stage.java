@@ -1,7 +1,6 @@
 package game;
 
 import ai.AIHandler;
-import ai.AIObject;
 import ai.Message;
 
 import gui.GUIHandler;
@@ -9,7 +8,7 @@ import gui.GUIScreens;
 import utils.ArrayList;
 import utils.Debugger;
 import utils.Location2D;
-import utils.Randomizer;
+import utils.ResourcesHandler;
 
 /**
  * Clase que contiene la información de una pantalla.
@@ -80,125 +79,64 @@ public class Stage {
 		// Sin nodos explorados.
 		exploredNodes = 0;
 		
-		// Datos de la pantalla (se debe hacer desde el gestor de recursos)
-		width = 10;
-		height = 10;
-	
-		// Nombre de la pantalla.
-		name = "Nombre de prueba";
+		// Obtenemos la información de la pantalla.
+		ResourcesHandler.getInstance().loadStage(this);
 		
-		// Start location
-		startLocation = new Location2D(1, 1);
-
-		// End location
-		endLocation = new Location2D(width-2, height-2);
-		
-		// Inicializamos el escenario.
-		scenery = new Scenery[width][height];
+		// Creamos el escenario.
+		if (scenery == null) {
+			System.err.println("The scenery of stage " + id + " was not loaded correctly.");
+			System.exit(-1);
+		}
 		
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				// Obtenemos un identificador único para el nuevo objeto.
-				double objectId = GameHandler.getInstance().getIdentifier();
-				
-				if( i == 0 || j == 0 || i == (width-1) || j == (height-1)) {
-					// Creamos el objeto lógico.
-					scenery[i][j] = new Scenery(objectId, new Location2D(i, j) ,false);
-					
-					// Creamos el objeto gráfico.
-					GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "wall_rock", 1);
-				}
-				else {
-					
-					// Será pared con un 10% de probabilidades.
-					if(Randomizer.getInstance().getRand(0, 100) > 10) {
-						// Creamos el objeto lógico.
-						scenery[i][j] = new Scenery(objectId,new Location2D(i, j), true);
-					
-						// Creamos el objeto gráfico.
-						GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "floor_sand", 1);
-					}
-					else {
-						// Creamos el objeto lógico.
-						scenery[i][j] = new Scenery(objectId, new Location2D(i, j) ,false);
-						
-						// Creamos el objeto gráfico.
-						GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "wall_rock", 1);
-					}
-				}
+				Scenery s = scenery[i][j];
+				GUIHandler.getInstance().registerObject(s.getId(), s, s.getGFXType(), s.getDepth());		
 			}
-			
-			elements = new ArrayList();
 		}
 		
-		// Añadimos la niebla.
-		visitedArea = new Scenery [width][height];
+		// Cargamos la niebla.
+		if (visitedArea == null) {
+			System.err.println("The fog of stage " + id + " was not loaded correctly.");
+			System.exit(-1);
+		}
+		
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				// Obtenemos un identificador único para el nuevo objeto.
-				double objectId = GameHandler.getInstance().getIdentifier();
-
-				// Creamos el objeto lógico.
-				visitedArea[i][j] = new Scenery(objectId, new Location2D(i, j) , true);
-				
-				// Creamos el objeto gráfico.
-				GUIHandler.getInstance().registerObject(objectId, scenery[i][j], "fog", 4);
+				Scenery s = visitedArea[i][j];
+				if(s!=null)
+					GUIHandler.getInstance().registerObject(s.getId(), s, s.getGFXType(), s.getDepth());
 			}
 		}
 		
-		// Añadimos los disparadores.
-		// Obtenemos un identificador para el final de nivel.
-		double endLevelId = GameHandler.getInstance().getIdentifier();
-		
-		// Obtenemos la posición inicial del final de nivel.
-		Location2D endLevelStartLocation = new Location2D(endLocation.getX(), endLocation.getY());
-		
-		// Creamos el objeto fin de nivel.
-		Trigger endLevel = new Trigger(endLevelId, endLevelStartLocation);
-		
-		// Creamos el objeto gráfico fin de nivel.
-		GUIHandler.getInstance().registerObject(endLevelId, endLevel, "end_level", 2);
-		
-		
-		// Añadimos los elementos
-		// Añadimos algunos enemigos
-		int numEmemigos = 1;
-		for(int i=0; i<numEmemigos;i++) {
-			double enemyId = GameHandler.getInstance().getIdentifier();
-			
-			// Obtenemos la posición inicial del jugador.
-			Location2D enemyStartLocation = new Location2D(endLocation.getX(), endLocation.getY());
-			
-			// Creamos el objeto jugador.
-			Element enemy = new Element();
-			enemy = new Element(enemyId, enemyStartLocation, 5, 2, 100, true, false, false, false, false);
-			// Creamos el objeto gráfico.
-			GUIHandler.getInstance().registerObject(enemyId, enemy, "enemy_minotaur_stand_front", 2);
-			// Creamos el objeto IA.
-			AIHandler.getInstance().registerObject(AIObject.MINOTAUR, enemyId, enemy);
+		// Creamos los elementos.
+		if (elements == null) {
+			System.err.println("The elements of stage " + id + " was not loaded correctly.");
+			System.exit(-1);
 		}
 		
-		// Obtenemos un identificador único para el jugador.
-		double playerId = GameHandler.getInstance().getIdentifier();
+		for (int i = 0; i<elements.size(); i++) {
+			Element e = (Element) elements.get(i);
+			if(!e.getGFXType().equals("none"))
+				GUIHandler.getInstance().registerObject(e.getId(), e, e.getGFXType(), e.getDepth());
+			if(!e.getAIType().equals("none"))
+				AIHandler.getInstance().registerObject(e.getId(), e.getAIType(), e);
+		}
 		
-		// Obtenemos la posición inicial del jugador.
-		Location2D playerStartLocation = new Location2D(startLocation.getX(), startLocation.getY());
+		// Creamos el jugador.
+		if (player == null) {
+			System.err.println("The player of stage " + id + " was not loaded correctly.");
+			System.exit(-1);
+		}
 		
-		// Creamos el objeto jugador.
-		player = new Element(playerId, playerStartLocation, 5, 2, 100, true, false, false, false, false);
-		// Creamos el objeto gráfico.
-		GUIHandler.getInstance().registerObject(playerId, player, "player_icaro_stand_front", 2);
-		// Creamos el objeto IA.
-		AIHandler.getInstance().registerObject(AIObject.PLAYER, playerId, player);
+		GUIHandler.getInstance().registerObject(player.getId(), player, player.getGFXType(), player.getDepth());
+		AIHandler.getInstance().registerObject(player.getId(), player.getAIType(), player);
 		
 		// Actualizamos el area visitada.
 		updateVisitedArea();
-		
-		// Obtenemos la posición inicial de la cámara.
-		Location2D cameraStartLocation = new Location2D(startLocation.getX(), startLocation.getY());
-		
+
 		// Establecemos la posición de la cámara.
-		GUIHandler.getInstance().setCamera(cameraStartLocation,0);
+		GUIHandler.getInstance().setCamera(new Location2D(startLocation.getX(), startLocation.getY()), 0);
 		
 		// Muestra la pantalla de juego.
 		GUIHandler.getInstance().showScreen(GUIScreens.GAME);
@@ -223,126 +161,6 @@ public class Stage {
 				}
 			}
 		}
-	}
-
-	// Obtiene el identificador.
-	public String getId() {
-		return id;
-	}
-	
-	// Establece el identificador.
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	// Obtiene el ancho de la pantalla.
-	public int getWidth() {
-		return width;
-	}
-	
-	// Establece el ancho de la pantalla.
-	public void setWidth(int width) {
-		this.width = width;
-	}
-	
-	// Obtiene el alto de la pantalla.
-	public int getHeight() {
-		return height;
-	}
-	
-	// Establece el alto de la pantalla.
-	public void setHeight(int height) {
-		this.height = height;
-	}
-	
-	// Obtiene el nombre de la pantalla.
-	public String getName() {
-		return name;
-	}
-	
-	// Establece el nombre de la pantalla.
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	// Obtiene el elemento jugador.
-	public Element getPlayer() {
-		return player;
-	}
-	
-	// Establece el elemento jugador.
-	public void setPlayer(Element player) {
-		this.player = player;
-	}
-	
-	// Obtiene los elementos de la pantalla.
-	public ArrayList getElements() {
-		return elements;
-	}
-	
-	// Establece los elementos de la pantalla.
-	public void setElements(ArrayList elements) {
-		this.elements = elements;
-	}
-	
-	// Obtiene el escenario.
-	public Scenery[][] getScenary() {
-		return scenery;
-	}
-	
-	// Establece el escenario.
-	public void setScenary(Scenery[][] scenary) {
-		this.scenery = scenary;
-	}
-	
-	// Obtiene el objeto scenery de la localización.
-	public Scenery getScenery(Location2D location) {
-		return scenery[location.getX()][location.getY()];
-	}
-	
-	// Establece el objeto scenery de la localización.
-	public void setScenery(Location2D location, Scenery scn) {
-		scenery[location.getX()][location.getY()] = scn;
-	}
-	
-	// Obtiene la localización de inicio.
-	public Location2D getStartLocation() {
-		return startLocation;
-	}
-	
-	// Establece la localización de inicio.
-	public void setStartLocation(Location2D startLocation) {
-		this.startLocation = startLocation;
-	}
-	
-	// Obtiene la localización de fin.
-	public Location2D getEndLocation() {
-		return endLocation;
-	}
-	
-	// Establece la localización de fin.
-	public void setEndLocation(Location2D endLocation) {
-		this.endLocation = endLocation;
-	}
-	
-	// Obtiene si se ha completado la pantalla.
-	public boolean isCompleted() {
-		return completed;
-	}
-	
-	// Establece si se ha completado la pantalla.
-	public void setCompleted(boolean completed) {
-		this.completed = completed;
-	}
-	
-	// Obtiene si se ha perdido la pantalla.
-	public boolean isDefeated() {
-		return defeated;
-	}
-	
-	// Establece si se ha perdido la pantalla.
-	public void setDefeated(boolean defeated) {
-		this.defeated = defeated;
 	}
 	
 	// Intenta desplazar al jugador.
@@ -433,13 +251,6 @@ public class Stage {
 
 	// Actualiza el juego.
 	public void update() {
-		// Comprobamos si ha muerto el jugador.
-		if(player.getLives() <= 0)
-			defeated = true;
-		
-		// Comprobamos si se ha completado la pantalla.
-		if(player.getLocation().getX() == width-2 && player.getLocation().getY() == height-2)
-			completed = true;
 		
 		// Activamos los disparadores.
 		/*if(!completed && !defeated) {
@@ -447,8 +258,32 @@ public class Stage {
 				triggers.get(i).check();
 			}
 		}*/
+		
+		// Comprobamos si ha muerto el jugador.
+		if(player.getLives() < 0) {
+			
+			// Pantalla perdida.
+			defeated = true;
+			
+			// Mostramos la pantalla de derrota.
+			GUIHandler.getInstance().stopGame();
+			GUIHandler.getInstance().showScreen(GUIScreens.DEFEAT);
+		}
+			
+		
+		// Comprobamos si se ha completado la pantalla.
+		if(player.getLocation().getX() == this.getEndLocation().getX() && player.getLocation().getY() == this.getEndLocation().getY()) {
+			
+			// Pantalla completada.
+			completed = true;
+			
+			// Mostramos la pantalla de victoria.
+			GUIHandler.getInstance().stopGame();
+			GUIHandler.getInstance().showScreen(GUIScreens.VICTORY);
+		}
 	}
 
+	// Indica si se puede pasar por la localización.
 	public boolean isPassable(Location2D location) {
 		boolean passable = true;
 		
@@ -463,5 +298,138 @@ public class Stage {
 		}
 
 		return passable;
+	}
+	
+	/// Getters & Setters
+	
+
+	// Obtiene el area visitada.
+	public Scenery[][] getVisitedArea() {
+		return visitedArea;		
+	}
+	
+	// Establece el area visitada.
+	public void setVisitedArea(Scenery[][] visitedArea) {
+		this.visitedArea = visitedArea;		
+	}
+	
+	// Obtiene el identificador.
+	public String getId() {
+		return id;
+	}
+	
+	// Establece el identificador.
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	// Obtiene el ancho de la pantalla.
+	public int getWidth() {
+		return width;
+	}
+	
+	// Establece el ancho de la pantalla.
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	
+	// Obtiene el alto de la pantalla.
+	public int getHeight() {
+		return height;
+	}
+	
+	// Establece el alto de la pantalla.
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	
+	// Obtiene el nombre de la pantalla.
+	public String getName() {
+		return name;
+	}
+	
+	// Establece el nombre de la pantalla.
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	// Obtiene el elemento jugador.
+	public Element getPlayer() {
+		return player;
+	}
+	
+	// Establece el elemento jugador.
+	public void setPlayer(Element player) {
+		this.player = player;
+	}
+	
+	// Obtiene los elementos de la pantalla.
+	public ArrayList getElements() {
+		return elements;
+	}
+	
+	// Establece los elementos de la pantalla.
+	public void setElements(ArrayList elements) {
+		this.elements = elements;
+	}
+	
+	// Obtiene el escenario.
+	public Scenery[][] getScenery() {
+		return scenery;
+	}
+	
+	// Establece el escenario.
+	public void setScenery(Scenery[][] scenery) {
+		this.scenery = scenery;
+	}
+	
+	// Obtiene el objeto scenery de la localización.
+	public Scenery getScenery(Location2D location) {
+		return scenery[location.getX()][location.getY()];
+	}
+	
+	// Establece el objeto scenery de la localización.
+	public void setScenery(Location2D location, Scenery scn) {
+		scenery[location.getX()][location.getY()] = scn;
+	}
+	
+	// Obtiene la localización de inicio.
+	public Location2D getStartLocation() {
+		return startLocation;
+	}
+	
+	// Establece la localización de inicio.
+	public void setStartLocation(Location2D startLocation) {
+		this.startLocation = startLocation;
+	}
+	
+	// Obtiene la localización de fin.
+	public Location2D getEndLocation() {
+		return endLocation;
+	}
+	
+	// Establece la localización de fin.
+	public void setEndLocation(Location2D endLocation) {
+		this.endLocation = endLocation;
+	}
+	
+	// Obtiene si se ha completado la pantalla.
+	public boolean isCompleted() {
+		return completed;
+	}
+	
+	// Establece si se ha completado la pantalla.
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+	
+	// Obtiene si se ha perdido la pantalla.
+	public boolean isDefeated() {
+		return defeated;
+	}
+	
+	// Establece si se ha perdido la pantalla.
+	public void setDefeated(boolean defeated) {
+		this.defeated = defeated;
 	}
 }

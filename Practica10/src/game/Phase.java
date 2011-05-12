@@ -36,14 +36,11 @@ public class Phase {
 	public void init() {		
 		Debugger.debug.print("Phase", "Init", "Starts");
 		
-		// Establecemos la primera pantalla como actual.
-		currentStage = 0;
+		// Fase no completada.
+		completed = false;
 		
-		// Obtenemos las pantallas.
-		stages = ResourcesHandler.getInstance().getStages(id);
-		
-		// Obtenemos la presentación.
-		presentation = new Presentation(id);
+		// Cargamos la información de la fase.
+		ResourcesHandler.getInstance().loadPhase(this);
 		
 		// Iniciamos la presentación.
 		presentation.init();
@@ -85,10 +82,9 @@ public class Phase {
 	// Avanza a la siguiente pantalla.
 	public boolean nextStage() {
 		boolean next = false;
-		Stage s;
-		
+
 		// Libera la pantalla actual.
-		s = (Stage) stages.get(currentStage);
+		Stage s = (Stage) stages.get(currentStage);
 		s.free();
 		
 		// Incrementa la pantalla.
@@ -132,14 +128,32 @@ public class Phase {
 		this.stages.add(stage);
 	}
 
+	// Actualiza el estado de la fase.
 	public void update() {
-		// Actualiza la pantalla.
-		Stage s = (Stage) stages.get(currentStage);
-		s.update();
 		
-		// Comprobar si se ha completado la pantalla.
-		if(s.isCompleted()) {
-			nextStage();
+		// Obtenemos la pantalla actual.
+		Stage s = (Stage) stages.get(currentStage);
+		
+		// Comprobamos si se ha perdido la pantalla.
+		if(s.isDefeated()) {
+			
+			// Repetimos la pantalla.
+			s.free();
+			s.init();
+			
+		} else {
+			
+			// Comprobar si se ha completado la pantalla.
+			if(s.isCompleted()) {
+				
+				// Avanzamos a la siguiente pantalla.
+				nextStage();
+			
+			} else {
+
+				// Actualiza la pantalla.
+				s.update();
+			}	
 		}
 	}
 
@@ -157,10 +171,42 @@ public class Phase {
 		return (Stage) stages.get(currentStage);
 	}
 
+	// Establece la pantalla actual.
+	public void setCurrentStage(int currentStage) {
+		this.currentStage = currentStage;
+	}
+
+	// Devuelve las pantallas de la fase.
+	public ArrayList getStages() {
+		return this.stages;
+	}
+	// Establece las pantallas de la fase.
+	public void setStages(ArrayList stages) {
+		this.stages = stages;
+	}
+
+	// Devuelve la presentación.
+	public Presentation getPresentation() {
+		return presentation;
+	}
+	
+	// Establece la presentación.
+	public void setPresentation(Presentation presentation) {
+		this.presentation = presentation;
+	}
+	
+	// Clona el objeto.
 	public Phase clone() {
 		Phase p = new Phase();
 		p.setId(this.id);
 		p.setName(this.name);
 		return p;
+	}
+
+	// Reinicia la pantalla.
+	public void retryStage() {
+		// Inicializar la pantalla actual.
+		Stage s = (Stage) stages.get(currentStage);
+		s.init();	
 	}
 }

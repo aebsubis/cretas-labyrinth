@@ -17,9 +17,6 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 	// Comando para abandonar el juego.
 	private Command back;
 	
-	// Comando para mostrar el minimapa.
-	private Command map;
-	
 	// Comando para mostrar el inventario.
 	private Command inventory;
 	
@@ -30,18 +27,25 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 	private GUICamera camera;
 	
 	// Indica si el juego está ejecutándose.
-	private boolean running = false;
+	private boolean running;
+	
+	// Hilo para la ejecución.
+	Thread t;
 	
 	// Constructor por defecto.
 	public GUIGame() {
+		// No se está ejecutando el juego.
+		running = false;
+		
+		// No se ha inicializado el hilo.
+		t = null;
+		
 		this.camera = new GUICamera();
 		
-	    map = new Command(ResourcesHandler.getInstance().getText("map"), Command.OK, 0);
 	    inventory = new Command(ResourcesHandler.getInstance().getText("inventory"), Command.OK,1);
 	    save = new Command(ResourcesHandler.getInstance().getText("save"), Command.OK,2);
 	    back = new Command(ResourcesHandler.getInstance().getText("back"), Command.BACK, 3);
 		
-		addCommand(map);
 		addCommand(inventory);
 		addCommand(save);
 		addCommand(back);
@@ -54,17 +58,17 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 		stop();
 		
 		// Cambiamos de pantalla.
-		if(command == map) {
-			GUIHandler.getInstance().showScreen(GUIScreens.MAP);
-		} else if (command == inventory) {
+		if (command == inventory) {
 			GUIHandler.getInstance().showScreen(GUIScreens.INVENTORY);
 		} else if (command == back) {
 			GUIHandler.getInstance().showScreen(GUIScreens.MAINMENU);
 		}
 	}
 
+	// Dibuja toda la pantalla del juego.
 	protected void paint(Graphics graphics) {
 		Debugger.debug.print("GUIGame", "paint", "Starts");
+		
 		// Dibujamos el fondo negro.
 	   	graphics.setColor(0,0,0);
 		graphics.fillRect(0, 0, getWidth(), getHeight());  	
@@ -78,6 +82,7 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 		Debugger.debug.print("GUIGame", "paint", "Ends");
 	}
 
+	// Dibuja el escenario.
 	private void paintScreen(Graphics graphics) {
 
 	   	// Obenemos la posición de la camara.
@@ -118,6 +123,7 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 
 	// Dibuja la barra de estado y sus componentes.
 	private void paintStatusBar(Graphics graphics) {
+		
 		// Dibujamos el fondo de la barra de estado.
 		// Establecemos el color gris claro.
 	   	graphics.setColor(200,200,200);
@@ -168,32 +174,44 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 
 	// Inicia el render.
 	public void start() {
-		// Creamos un nuevo hilo de ejecución.
-		Thread t = new Thread(this);
-	    t.start();
+
+		if(running == false) {
+			// Creamos un nuevo hilo de ejecución.
+			t = new Thread(this);
+			t.start();
+		} else {
+			System.err.println("GUIGame::There is another thread in progress.");
+			System.exit(-1);
+		}
 	}
 	
 	// Detiene el render.
 	public void stop() {
+
 		running = false;
+		if(t!=null)
+			if(t.isAlive())
+				t.interrupt();
 	}
 	
 	public void run() {
+
 		running = true;
 		try {
 		while(running) {
+			
 			Debugger.debug.print("GUIGame", "run", "Starts");
 			// Obtenemos el instante de inicio del fotograma.
 			long cycleStartTime = System.currentTimeMillis();
 
+			// Dibujamos el juego.
+			repaint();
+			
 			// Actualizamos la posición de la cámara
 			camera.update();
 			
 			// Acualizamos el juego.
 			GameHandler.getInstance().update();
-
-			// Dibujamos el juego.
-			repaint();
 
 			// Calculamos el tiempo transcurrido.
 			long timeSinceStart = (cycleStartTime - System.currentTimeMillis());
@@ -211,6 +229,7 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	// Captura los eventos de teclado y se los pasa al manejador del juego.

@@ -12,9 +12,9 @@ public class Trigger extends GameObject{
 	}
 	
 	// Constructor sobrecargado.
-	public Trigger(double id, Location2D location) {
+	public Trigger(double id, Location2D location, String IAType, String GFXType, int depth) {
 
 		// Llamamos al constructor de la clase padre.
-		super(id, location);
+		super(id, location, IAType, GFXType, depth);
 	}
 }

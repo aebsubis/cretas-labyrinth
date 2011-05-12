@@ -45,13 +45,12 @@ public class GUIHandler{
 	private GUILoadGame loadgameScreen;
 	private GUISaveGame savegameScreen;
 	private GUIGame gameScreen;
-	private GUIGameMenu gamemenuScreen;
 	private GUIPresentation presentationScreen;
-	private GUIMap mapScreen;
 	private GUIStart startScreen;
-	private GUIScores scoresScreen;
 	private GUISettings settingsScreen;
 	private GUIInventory inventoryScreen;
+	private GUIVictory victoryScreen;
+	private GUIDefeat defeatScreen;
 	
 	// Constructor privado.
 	private GUIHandler() {
@@ -82,26 +81,23 @@ public class GUIHandler{
 			Display.getDisplay(theMidlet).setCurrent(gameScreen);
 			gameScreen.start();
 			break;
-		case GUIScreens.GAMEMENU:
-			//Display.getDisplay(theMidlet).setCurrent(gamemenuScreen);
-			break;
 		case GUIScreens.PRESENTATION:
 			Display.getDisplay(theMidlet).setCurrent(presentationScreen);
 			break;
-		case GUIScreens.MAP:
-			//Display.getDisplay(theMidlet).setCurrent(mapeScreen);
-			break;
 		case GUIScreens.STARTSCREEN:
 			Display.getDisplay(theMidlet).setCurrent(startScreen);
-			break;
-		case GUIScreens.SCORES:
-			// Display.getDisplay(theMidlet).setCurrent(scoreScreen);
 			break;
 		case GUIScreens.SETTINGS:
 			// Display.getDisplay(theMidlet).setCurrent(settingsScreen);
 			break;
 		case GUIScreens.INVENTORY:
 			// Display.getDisplay(theMidlet).setCurrent(inventoryScreen);
+			break;
+		case GUIScreens.VICTORY:
+			Display.getDisplay(theMidlet).setCurrent(victoryScreen);
+			break;
+		case GUIScreens.DEFEAT:
+			Display.getDisplay(theMidlet).setCurrent(defeatScreen);
 			break;
 		}
 	}
@@ -121,13 +117,12 @@ public class GUIHandler{
 		loadgameScreen = new GUILoadGame();
 		savegameScreen = new GUISaveGame();
 		gameScreen = new GUIGame();
-		gamemenuScreen = new GUIGameMenu();
 		presentationScreen = new GUIPresentation();
-		mapScreen = new GUIMap();
 		startScreen = new GUIStart();
-		scoresScreen = new GUIScores();
 		settingsScreen = new GUISettings();
 		inventoryScreen	= new GUIInventory();
+		victoryScreen = new GUIVictory();
+		defeatScreen = new GUIDefeat();
 	}
 
 	// Cierra la aplicación.
@@ -142,9 +137,15 @@ public class GUIHandler{
 	}
 
 	// Continua el último juego.
-	public void continueGame() {
+	public void resumeGame() {
 		// Cargamos los datos del juego.
-		//GameHandler.getInstance().continue();
+		GameHandler.getInstance().resume();
+	}
+	
+	// Resume que hace trampa porque antes de reiniciar establece la pantalla como perdida.
+	public void resumeGame2() {
+		GameHandler.getInstance().getCurrentPhase().getCurrentStage().setDefeated(true);
+		resumeGame();
 	}
 
 	// Redibuja la pantalla del juego.
@@ -244,6 +245,7 @@ public class GUIHandler{
 		presentationScreen.repaint();
 	}
 
+	// Detiene el juego.
 	public void stopGame() {
 		gameScreen.stop();
 	}

@@ -1,6 +1,8 @@
 package ai;
 
 import game.Direction;
+import game.GameHandler;
+import game.Stage;
 import gui.GUIHandler;
 import utils.Location2D;
 import utils.ResourcesHandler;
@@ -87,5 +89,75 @@ public class Player_StateMove extends State{
 		
 	}
 	
-	
+	public boolean onMessage(AIObject o, Message m) {
+		// Indica si el mensaje ha podido ser manejado.
+		boolean handled = true;
+
+		// Obtenemos la posición del jugador.
+		Location2D pActLoc = o.element.getLocation();
+		
+		// Obtenemos la escena.
+		Stage stage = GameHandler.getInstance().getCurrentPhase().getCurrentStage();
+		
+		switch(m.type) {
+		case Message.recivedImpact:
+
+			if(System.currentTimeMillis() - o.element.getLastHitTime() > 1000) {
+				o.element.setLastHitTime(System.currentTimeMillis());
+				
+				// Restamos una vida.
+				o.element.setLives(o.element.getLives()-1);
+				
+				// Desplazamos al personaje en la dirección del golpe si es posible.
+				switch(AIHandler.getInstance().getObject(m.senderId).element.getMovementDirection()) {
+				case Direction.UP:				
+					// Comprobamos si se puede realizar el movimiento.
+					if(stage.isPassable(new Location2D(pActLoc.getX(), pActLoc.getY()-1))){
+						// Establecemos la dirección del movimiento.
+						o.element.setMovementDirection(Direction.UP);
+						
+						// Hacemos que el jugador se desplace.
+						o.stateMachine.changeState(Player_StateBoost.getInstance(), o);
+					}
+					break;
+				case Direction.DOWN:
+					// Comprobamos si se puede realizar el movimiento.
+					if(stage.isPassable(new Location2D(pActLoc.getX(), pActLoc.getY()+1))){
+						// Establecemos la dirección del movimiento.
+						o.element.setMovementDirection(Direction.DOWN);
+						
+						// Hacemos que el jugador se desplace.
+						o.stateMachine.changeState(Player_StateBoost.getInstance(), o);
+					}
+					break;
+				case Direction.LEFT:
+					// Comprobamos si se puede realizar el movimiento.
+					if(stage.isPassable(new Location2D(pActLoc.getX()-1, pActLoc.getY()))){
+						// Establecemos la dirección del movimiento.
+						o.element.setMovementDirection(Direction.LEFT);
+						
+						// Hacemos que el jugador se desplace.
+						o.stateMachine.changeState(Player_StateBoost.getInstance(), o);
+					}
+					break;
+				case Direction.RIGHT:
+					// Comprobamos si se puede realizar el movimiento.
+					if(stage.isPassable(new Location2D(pActLoc.getX()+1, pActLoc.getY()))){
+						// Establecemos la dirección del movimiento.
+						o.element.setMovementDirection(Direction.RIGHT);
+						
+						// Hacemos que el jugador se desplace.
+						o.stateMachine.changeState(Player_StateBoost.getInstance(), o);
+					}
+					break;
+				}
+			}
+			break;
+		default:
+			// No se pudo manejar ese tipo de mensaje.
+			handled = false;
+			break;
+		}
+		return handled;
+	}	
 }

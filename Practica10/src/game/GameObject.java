@@ -12,6 +12,15 @@ public abstract class GameObject {
 	// Identificador del objeto.
 	private double id;
 	
+	// Tipo del objeto GFX.
+	private String GFXType;
+	
+	// Tipo del objeto IA.
+	private String AIType;
+	
+	// Profundidad a la que se encuentra el objeto.
+	private int depth;
+	
 	// Localización del objeto.
 	private Location2D location;
 	
@@ -26,9 +35,12 @@ public abstract class GameObject {
 	}
 	
 	// Constructor sobrecargado.
-	public GameObject(double id, Location2D location) {
+	public GameObject(double id, Location2D location, String AIType, String GFXType, int depth) {
 		this.id = id;
 		this.location = location;
+		this.AIType = AIType;
+		this.GFXType = GFXType;
+		this.depth = depth;
 	}
 	
 	// Obtiene el identificador del objeto.
@@ -69,5 +81,35 @@ public abstract class GameObject {
 	// Establece el yDelay.
 	public void setYDelay(int y) {
 		this.yDelay = y;
+	}
+	
+	// Obtiene el tipo GFX.
+	public String getGFXType() {
+		return GFXType;
+	}
+	
+	// Establece el tipo GFX.
+	public void setGFXType(String GFXType) {
+		this.GFXType = GFXType;
+	}
+	
+	// Obtiene el tipo IA.
+	public String getAIType() {
+		return AIType;
+	}
+	
+	// Establece el tipo IA.
+	public void setAIType(String AIType) {
+		this.AIType = AIType;
+	}
+	
+	// Obtiene la profundidad.
+	public int getDepth() {
+		return depth;
+	}
+	
+	// Establece la profundidad.
+	public void setDepth(int depth) {
+		this.depth = depth;
 	}
 }
