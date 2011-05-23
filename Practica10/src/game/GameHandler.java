@@ -115,24 +115,21 @@ public class GameHandler{
 		} else {
 			
 			Phase phase = (Phase) phases.get(currentPhase);
+			// Update events.
+			events();
+
+			// Update AI.		
+			AIHandler.getInstance().update();
+			
+			// Update Game.
+			phase.update();
 			// Comprobar si se ha completado la fase.
 			if(phase.isCompleted()) {
 
 				// Pasamos a la siguiente fase.
 				nextPhase();
-				
-			} else {
-				
-				// Update events.
-				events();
-
-				// Update AI.		
-				AIHandler.getInstance().update();
-				
-				// Update Game.
-				phase.update();
-			}
-		}
+			
+		}}
 		Debugger.debug.print("GameHandler", "update", "Ends");
 	}
 	

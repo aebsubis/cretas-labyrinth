@@ -147,8 +147,8 @@ public class Stage {
 	// Actualiza el área visitada.
 	private void updateVisitedArea() {
 		// Establecemos el área como visitada.
-		for(int i = -2; i<3; i++) {
-			for(int j=-2; j<3; j++) {
+		for(int i = -1; i<2; i++) {
+			for(int j=-1; j<2; j++) {
 				if(player.getLocation().getX()+j>=0 
 						&& player.getLocation().getX()+j<width
 						&& player.getLocation().getY()+i>=0
@@ -265,6 +265,9 @@ public class Stage {
 			// Pantalla perdida.
 			defeated = true;
 			
+			 // Reproducimos el sonido.
+			ResourcesHandler.getInstance().playSound("defeat");
+			
 			// Mostramos la pantalla de derrota.
 			GUIHandler.getInstance().stopGame();
 			GUIHandler.getInstance().showScreen(GUIScreens.DEFEAT);
@@ -272,10 +275,13 @@ public class Stage {
 			
 		
 		// Comprobamos si se ha completado la pantalla.
-		if(player.getLocation().getX() == this.getEndLocation().getX() && player.getLocation().getY() == this.getEndLocation().getY()) {
+		if(player.getLocation().getX() == endLocation.getX() && player.getLocation().getY() == endLocation.getY()) {
 			
 			// Pantalla completada.
 			completed = true;
+			
+			 // Reproducimos el sonido.
+			ResourcesHandler.getInstance().playSound("victory");
 			
 			// Mostramos la pantalla de victoria.
 			GUIHandler.getInstance().stopGame();

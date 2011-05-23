@@ -6,6 +6,8 @@ import javax.microedition.lcdui.CommandListener;
 import javax.microedition.lcdui.Displayable;
 import javax.microedition.lcdui.Graphics;
 
+import com.sun.perseus.model.Stop;
+
 import utils.ResourcesHandler;
 
 public class GUIMainMenu extends Canvas implements Runnable, CommandListener{
@@ -52,6 +54,12 @@ public class GUIMainMenu extends Canvas implements Runnable, CommandListener{
 
 	public void commandAction(Command command, Displayable diplayable) {
 		if (command == select) {
+			
+			// Detenemos el dibujado.
+			stop();
+			
+			// Reproducimos el sonido.
+			ResourcesHandler.getInstance().playSound("selectoption");
 			
 			switch(optionFocus) {
 			case 0:
@@ -131,11 +139,17 @@ public class GUIMainMenu extends Canvas implements Runnable, CommandListener{
       switch (getGameAction(keyCode))
       {
          case UP:
+        	// Reproducimos el sonido.
+ 			ResourcesHandler.getInstance().playSound("changeoption");
+ 			
             optionFocus--;
             if(optionFocus<0)
             	optionFocus = numOptions-1;
             break;
          case DOWN:
+        	// Reproducimos el sonido.
+  			ResourcesHandler.getInstance().playSound("changeoption");
+  			
             optionFocus++;
             if(optionFocus>=numOptions)
             	optionFocus=0;
