@@ -8,19 +8,17 @@ import game.Scenery;
 import game.Slide;
 import game.Stage;
 
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.util.Hashtable;
-
 import javax.microedition.lcdui.Image;
-
+import javax.microedition.media.Manager;
+import javax.microedition.media.MediaException;
+import javax.microedition.media.Player;
 import maps.Map;
 import maps.MapElement;
 import maps.MapTraining1;
 import maps.MapTraining2;
 import maps.MapTraining3;
-
-import org.kxml2.io.KXmlParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * El Manejador de recursos es el encargado de gestionar todos los recursos externos
@@ -57,7 +55,7 @@ public class ResourcesHandler{
 	private Hashtable animations;
 	
 	// Sonidos.
-	private Hashtable sounds;
+	//private Hashtable sounds;
 	
 	// Fases
 	private Hashtable phases;
@@ -314,6 +312,10 @@ public class ResourcesHandler{
 		    	//images.put("map_thread", Image.createImage("/element/map_thread.png"));
 		    	//images.put("map_wax", Image.createImage("/element/map_wax.png"));
 				
+		    	//images.put("nature_tree", Image.createImage("/element/nature_tree.png"));
+		    	//images.put("nature_bridge_vertical", Image.createImage("/element/nature_bridge_vertical.png"));
+		    	//images.put("nature_bridge_horizontal", Image.createImage("/element/nature_bridge_horizontal.png"));
+		    	
 				// Escenario
 		    	
 		    	/// Niebla
@@ -321,20 +323,21 @@ public class ResourcesHandler{
 		    	
 				/// Suelos
 		    	images.put("floor_sand", Image.createImage("/scenery/floor_sand.png"));
-		    	
 		    	//images.put("floor_grass", Image.createImage("/scenery/floor_grass.png"));
 		    	//images.put("floor_rock", Image.createImage("/scenery/floor_rock.png"));
 		    	//images.put("floor_tiles", Image.createImage("/scenery/floor_tiles.png"));
-		    	//images.put("floor_bridge", Image.createImage("/scenery/floor_bridge.png"));
+		    	
 				
 				// Paredes
-		    	//images.put("wall_metal", Image.createImage("/scenery/wall_metal.png"));
 		    	//images.put("wall_grass", Image.createImage("/scenery/wall_grass.png"));
 		    	images.put("wall_rock", Image.createImage("/scenery/wall_rock.png"));
 				
 				// Naturaleza
-		    	//images.put("nature_tree", Image.createImage("/scenery/nature_tree.png"));
-		    	//images.put("nature_water", Image.createImage("/scenery/nature_water.png"));
+		    	
+		    	//images.put("nature_water1", Image.createImage("/scenery/nature_water1.png"));
+		    	//images.put("nature_water2", Image.createImage("/scenery/nature_water2.png"));
+		    	//images.put("nature_water3", Image.createImage("/scenery/nature_water3.png"));
+		    	//images.put("nature_water4", Image.createImage("/scenery/nature_water4.png"));
 		    	//images.put("nature_waterfall", Image.createImage("/scenery/nature_waterfall.png"));
 		    	
 		    	// Presentaciones
@@ -443,6 +446,7 @@ public class ResourcesHandler{
 	    	//images.put("enemy_bug", Image.createImage("/element/enemy_bug.png"));
 	    	//images.put("enemy_spider", Image.createImage("/element/enemy_spider.png"));
 	    	//images.put("enemy_snake", Image.createImage("/element/enemy_snake.png"));
+	    	
 	    	f = new ArrayList();
 	    	f.add("enemy_minotaur_front1");
 	    	animations.put("enemy_minotaur_stand_front", f);
@@ -525,7 +529,20 @@ public class ResourcesHandler{
 	    	//images.put("map_feather", Image.createImage("/element/map_feather.png"));
 	    	//images.put("map_thread", Image.createImage("/element/map_thread.png"));
 	    	//images.put("map_wax", Image.createImage("/element/map_wax.png"));
-			
+	    	/*f = new ArrayList();
+	    	f.add("nature_tree");
+	    	animations.put("nature_tree", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("nature_bridge_vertical");
+	    	animations.put("nature_bridge_vertical", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("nature_bridge_horizontal");
+	    	animations.put("nature_bridge_horizontal", f);
+	    	*/
+	    	
+	    	
 			// Escenario
 	    	
 	    	/// Niebla
@@ -537,27 +554,59 @@ public class ResourcesHandler{
 	    	f = new ArrayList();
 	    	f.add("floor_sand");
 	    	animations.put("floor_sand", f);
+	    	/*
+	    	f = new ArrayList();
+	    	f.add("floor_grass");
+	    	animations.put("floor_grass", f);
 	    	
-	    	//images.put("floor_grass", Image.createImage("/scenery/floor_grass.png"));
-	    	//images.put("floor_rock", Image.createImage("/scenery/floor_rock.png"));
-	    	//images.put("floor_tiles", Image.createImage("/scenery/floor_tiles.png"));
-	    	//images.put("floor_bridge", Image.createImage("/scenery/floor_bridge.png"));
-			
+	    	f = new ArrayList();
+	    	f.add("floor_rock");
+	    	animations.put("floor_rock", f);
+	    	
+	    	f = new ArrayList();
+	    	f.add("floor_tiles");
+	    	animations.put("floor_tiles", f);
+	    	
 			// Paredes
-	    	//images.put("wall_metal", Image.createImage("/scenery/wall_metal.png"));
-	    	//images.put("wall_grass", Image.createImage("/scenery/wall_grass.png"));
+	    	f = new ArrayList();
+	    	f.add("wall_grass");
+	    	animations.put("wall_grass", f);
+	    	*/
 	    	f = new ArrayList();
 	    	f.add("wall_rock");
 	    	animations.put("wall_rock", f);
-	    	
+			/*
 			// Naturaleza
-	    	//images.put("nature_tree", Image.createImage("/scenery/nature_tree.png"));
-	    	//images.put("nature_water", Image.createImage("/scenery/nature_water.png"));
+	    	f = new ArrayList();
+	    	f.add("nature_water1");
+	    	f.add("nature_water2");
+	    	f.add("nature_water3");
+	    	f.add("nature_water4");
+	    	animations.put("nature_water", f);
+*/
+
 	    	//images.put("nature_waterfall", Image.createImage("/scenery/nature_waterfall.png"));
 		    	
 		    
 			// Sonidos
-		    sounds = new Hashtable();
+		    /*sounds = new Hashtable();
+		    
+		    try {
+				sounds.put("victory", Manager.createPlayer(getClass().getResourceAsStream("/sounds/victory.wav"), "audio/X-wav"));
+			
+		    
+		    sounds.put("defeat", Manager.createPlayer(getClass().getResourceAsStream("/sounds/defeat.wav"), "audio/X-wav"));
+		    sounds.put("hit", Manager.createPlayer(getClass().getResourceAsStream("/sounds/hit.wav"), "audio/X-wav"));
+		    //sounds.put("menumusic", Manager.createPlayer(getClass().getResourceAsStream("/sounds/menumusic.wav"), "audio/X-wav"));
+		    sounds.put("nextslide", Manager.createPlayer(getClass().getResourceAsStream("/sounds/nextSlide.wav"), "audio/X-wav"));
+		    sounds.put("skipslide", Manager.createPlayer(getClass().getResourceAsStream("/sounds/skipSlide.wav"), "audio/X-wav"));
+		    sounds.put("changeoption", Manager.createPlayer(getClass().getResourceAsStream("/sounds/changeOption.wav"), "audio/X-wav"));
+		    sounds.put("selectoption", Manager.createPlayer(getClass().getResourceAsStream("/sounds/selectOption.wav"), "audio/X-wav"));
+		    } catch (IOException e) {
+				e.printStackTrace();
+			} catch (MediaException e) {
+				e.printStackTrace();
+			}*/
 		    
 		    // Fases
 		    phases = new Hashtable();
@@ -631,21 +680,12 @@ public class ResourcesHandler{
 	
 	// Reproduce un sonido.
 	public void playSound(String id) {
-		/*try 
-		  { 
-			InputStream is = getClass().getResourceAsStream("/whut.mp3");
-		    Player player = Manager.createPlayer(is,"audio/mpeg");
-		    player.realize();
-		    // get volume control for player and set volume to max
-		    VolumeControl vc = (VolumeControl) player.getControl("VolumeControl");
-		    if(vc != null)
-		    {
-		      vc.setLevel(100);
-		    }
-		    player.prefetch();
-		    player.start();
-		  }
-		  catch (Exception e) { }*/
+		    /*try {
+				Player player = (Player) sounds.get(id);
+				player.start();
+			} catch (MediaException e) {
+				e.printStackTrace();
+			}*/
 	}
 	
 	// Obtiene una fase.
@@ -906,32 +946,6 @@ public class ResourcesHandler{
 
 	// Carga la información de una pantalla.
 	public void loadStage(Stage stage){
-		
-		/*
-		InputStreamReader reader =  null;
-		KXmlParser parser = null;
-		XmlParser gParser = null;
-		XmlNode xml = null;
-		
-		reader = new InputStreamReader(getClass().getResourceAsStream("/phases/training1/stages/training1.xml"));
-
-		parser = new KXmlParser();
-		gParser = new XmlParser();
-		
-		try {
-			parser.setInput(reader);
-		} catch (Exception e) {
-			System.err.println("Error al establecer el input.");
-			e.printStackTrace();
-		}
-
-		try {
-			xml = gParser.parseXML(parser, true);
-		} catch (Exception e) {
-			System.err.println("Error al obtener el XML.");
-			e.printStackTrace();
-		}
-		*/
 		Map loadingMap = null;
 		if(stage.getId().equals("training1")) {
 			loadingMap = new MapTraining1();
@@ -943,7 +957,6 @@ public class ResourcesHandler{
 			System.err.println( "Stage \"" + stage.getId() + "\" not found.");
 			System.exit(-1);
 		}
-		
 		
 		// Nombre de la pantalla.
 		stage.setName(getText("stage_" + stage.getId() + "_name"));
@@ -1054,8 +1067,8 @@ public class ResourcesHandler{
 		stage.setStartLocation(new Location2D(startLevelLocationX, startLevelLocationY));
 		
 		// Obtenemos la posición final del nivel.
-		int endLevelLocationX = 0;
-		int endLevelLocationY = 0;
+		int endLevelLocationX = loadingMap.getEndLocationX();
+		int endLevelLocationY = loadingMap.getEndLocationY();
 		
 		// End location
 		stage.setEndLocation(new Location2D(endLevelLocationX, endLevelLocationY));

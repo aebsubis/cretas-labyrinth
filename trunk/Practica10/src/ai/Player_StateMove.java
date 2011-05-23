@@ -108,6 +108,9 @@ public class Player_StateMove extends State{
 				// Restamos una vida.
 				o.element.setLives(o.element.getLives()-1);
 				
+				// Reproducimos el sonido.
+	 			ResourcesHandler.getInstance().playSound("hit");
+	 			
 				// Desplazamos al personaje en la dirección del golpe si es posible.
 				switch(AIHandler.getInstance().getObject(m.senderId).element.getMovementDirection()) {
 				case Direction.UP:				

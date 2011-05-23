@@ -15,10 +15,10 @@ import utils.ResourcesHandler;
 public class GUIGame extends Canvas implements Runnable, CommandListener{
    	
 	// Comando para abandonar el juego.
-	private Command back;
+	private Command exit;
 	
 	// Comando para mostrar el inventario.
-	private Command inventory;
+	//private Command inventory;
 	
 	// Comando para guardar el progreso.
 	private Command save;
@@ -42,27 +42,33 @@ public class GUIGame extends Canvas implements Runnable, CommandListener{
 		
 		this.camera = new GUICamera();
 		
-	    inventory = new Command(ResourcesHandler.getInstance().getText("inventory"), Command.OK,1);
-	    save = new Command(ResourcesHandler.getInstance().getText("save"), Command.OK,2);
-	    back = new Command(ResourcesHandler.getInstance().getText("back"), Command.BACK, 3);
+	    //inventory = new Command(ResourcesHandler.getInstance().getText("inventory"), Command.ITEM, 1);
+	    save = new Command(ResourcesHandler.getInstance().getText("save"), Command.ITEM, 2);
+	    exit = new Command(ResourcesHandler.getInstance().getText("exit"), Command.EXIT, 3);
 		
-		addCommand(inventory);
+		//addCommand(inventory);
 		addCommand(save);
-		addCommand(back);
+		addCommand(exit);
 	    setCommandListener(this);
 	}
 
 	// Ejecutamos los comandos.
 	public void commandAction(Command command, Displayable displayable) {
-		// Detenemos el dibujado.
-		stop();
+		
 		
 		// Cambiamos de pantalla.
-		if (command == inventory) {
-			GUIHandler.getInstance().showScreen(GUIScreens.INVENTORY);
-		} else if (command == back) {
+		if (command == save) {
+			// Salvar juego.
+		} else if (command == exit) {
+			// Detenemos el dibujado.
+			stop();
+			
+			// Mostramos el menú.
 			GUIHandler.getInstance().showScreen(GUIScreens.MAINMENU);
 		}
+		/*else if (command == inventory) {
+			GUIHandler.getInstance().showScreen(GUIScreens.INVENTORY);
+		}*/
 	}
 
 	// Dibuja toda la pantalla del juego.

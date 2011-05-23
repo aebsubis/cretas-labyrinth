@@ -36,10 +36,20 @@ public class GUIPresentation extends Canvas implements CommandListener{
 	}
 	
 	public void commandAction(Command command, Displayable displayable) {
-		if (command == next)
+		if (command == next) {
+			
+			// Reproducimos el sonido.
+ 			ResourcesHandler.getInstance().playSound("nextslide");
+ 			
 			GameHandler.getInstance().nextSlide();
-		if (command == skip)
+			
+		} if (command == skip) {
+		
+			// Reproducimos el sonido.
+ 			ResourcesHandler.getInstance().playSound("skipslide");
+ 			
 			GameHandler.getInstance().skipSlide();
+		}
 	}
 
 	protected void paint(Graphics graphics) {
